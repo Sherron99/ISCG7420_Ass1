@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Lecturers
+{% endblock %}
+{% block content %}
+    {% for user in users %}
+        <p>
+            <a href="{% url "showLecturer" user.id %}">
+                {{ user.id }} - {{ user }}
+            </a>
+            <a href="{% url 'updateLecturer' user.id %}" class="btn btn-danger">
+                Update
+            </a>
+            <a href="{% url "deleteLecturer" user.id %}" class="btn btn-danger">
+                Delete
+            </a>
+        </p>
+    {% endfor %}
+    <a href="{% url 'registerUser' %}" class="btn btn-primary">Register New Lecturer</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Semesters
+{% endblock %}
+{% block content %}
+    {% for semester in semesters %}
+        <p>
+            <a href="{% url 'showSemester' semester.id %}">
+                {{ semester.id }} - {{ semester.year }} - {{ semester.semester }}
+            </a>
+            <a href="{% url 'updateSemester' semester.id %}" class="btn btn-danger">
+                Update
+            </a>
+            <a href="{% url "deleteSemester" semester.id %}" class="btn btn-danger">
+                Delete
+            </a>
+        </p>
+    {% endfor %}
+    <a href="{% url 'createSemester' %}" class="btn btn-primary">Create New Semester</a>
+{% endblock %}

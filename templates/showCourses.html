@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Courses
+{% endblock %}
+{% block content %}
+    {% for course in courses %}
+        <p>
+            <a href="{% url "showCourse" course.id %}">
+                {{ course.id }} - {{ course.code }} - {{ course.name }}
+            </a>
+            <a href="{% url 'updateCourse' course.id %}" class="btn btn-danger">
+                Update
+            </a>
+            <a href="{% url "deleteCourse" course.id %}" class="btn btn-danger">
+                Delete
+            </a>
+        </p>
+    {% endfor %}
+    <a href="{% url 'createCourse' %}" class="btn btn-primary">Register New Course</a>
+{% endblock %}

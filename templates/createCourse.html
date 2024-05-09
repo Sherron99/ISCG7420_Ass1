@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    Create Courses Page
+{% endblock %}
+{% block content %}
+    <form action="{% url 'createCourse' %}" method="post">
+        {% csrf_token %}
+        <p>Code:</p>
+        <p><input type="text" name="Code" value="{{ course.code }}"></p>
+        <p>Name:</p>
+        <p><input type="text" name="Name" value="{{ course.name }}"></p>
+        <input type="submit" value="CREATE">
+    </form>
+{% endblock %}

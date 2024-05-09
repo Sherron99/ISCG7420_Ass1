@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    Login page
+{% endblock %}
+<body>
+{% block content %}
+    <p>Hello! {{ user.username }}</p> 
+    <button><a href="{% url 'showSemesters' %}">Manage Semesters</a></button>
+    <button><a href="{% url 'showCourses' %}">Manage Courses</a></button>
+    <button><a href="{% url 'showClasses' %}">Manage Classes</a></button>
+    <button><a href="{% url 'showStudents' %}">Manage Students</a></button>
+    <button><a href="{% url 'showLecturers' %}">Manage Lecturers</a></button>
+{% endblock %}
+</body>

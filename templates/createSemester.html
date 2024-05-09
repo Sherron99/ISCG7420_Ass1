@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    Create Semester Page
+{% endblock %}
+{% block content %}
+    <form action="{% url 'createSemester' %}" method="post">
+        {% csrf_token %}
+        <p>Year:</p>
+        <p><input type="number" name="Year" value="{{ semester.year }}"></p>
+        <p>Semester:</p>
+        <p><input type="number" name="Semester" value="{{ semester.semester }}"></p>
+        <input type="submit" value="CREATE">
+    </form>
+{% endblock %}
