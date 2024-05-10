@@ -340,10 +340,6 @@ def createClass(request):
 
 
 def updateClass(request, id):
-    semester_choices = Semester.objects.all()
-    course_choices = Course.objects.all()
-    lecturer_choices = Lecturer.objects.all()
-
     classs = Class.objects.get(id=id)
 
     if request.method == 'POST':
@@ -362,6 +358,10 @@ def updateClass(request, id):
         classs.lecturer = lecturer
         classs.save()
         return redirect('showClasses')
+
+    semester_choices = Semester.objects.all()
+    course_choices = Course.objects.all()
+    lecturer_choices = Lecturer.objects.all()
 
     context = {
         'class': classs,

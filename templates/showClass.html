@@ -9,6 +9,7 @@
         <p>Number:</p>
         <p><input type="text" name="number" value="{{ class.number }}"></p>
         <p>Semester:</p>
+    <!--下面的代码中我们有一个selected（布尔属性//专门用来指示下拉菜单中的某个选项是否被预选中），当class.semester.id等于这个选项时，selected = true，直接跳出循环这个选项就会被显示出来-->
         <p>
             <select name="semester">
                 {% for semester_choice in semester_choices %}

@@ -36,7 +36,7 @@ class Class(models.Model): #Class Model
     students = models.ManyToManyField('Student', through='StudentEnrolment')#through指定关系的表名
 
     def __str__(self):
-        return self.number
+        return self.number + self.course.name
 
 class Student(models.Model): #Student Model
     firstName = models.CharField(max_length=100)
