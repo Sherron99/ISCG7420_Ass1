@@ -111,7 +111,7 @@ def registerStudent(request):
         user.groups.add(Group.objects.get(name='Students'))
 
         # Create Student instance
-        student = Student.objects.create(user=user, date_of_birth=dob)
+        student = Student.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
         student.save()
 
         # Add any other logic or redirects as needed
