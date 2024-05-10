@@ -344,20 +344,14 @@ def updateClass(request, id):
     course_choices = Course.objects.all()
     lecturer_choices = Lecturer.objects.all()
 
-    context = {
-        'semester_choices': semester_choices,
-        'course_choices': course_choices,
-        'lecturer_choices': lecturer_choices,
-    }
-
     classs = Class.objects.get(id=id)
+
     if request.method == 'POST':
         number = request.POST.get('number')
-        semester_id = request.POST.get('semester')  # Retrieve semester ID
-        course_id = request.POST.get('course')      # Retrieve course ID
-        lecturer_id = request.POST.get('lecturer')  # Retrieve lecturer ID
+        semester_id = request.POST.get('semester')
+        course_id = request.POST.get('course')
+        lecturer_id = request.POST.get('lecturer')
 
-        # Get semester, course, and lecturer instances
         semester = Semester.objects.get(pk=semester_id)
         course = Course.objects.get(pk=course_id)
         lecturer = Lecturer.objects.get(pk=lecturer_id)
@@ -368,7 +362,15 @@ def updateClass(request, id):
         classs.lecturer = lecturer
         classs.save()
         return redirect('showClasses')
-    return render(request, 'showClass.html', {'class': classs, 'context': context})
+
+    context = {
+        'class': classs,
+        'semester_choices': semester_choices,
+        'course_choices': course_choices,
+        'lecturer_choices': lecturer_choices,
+    }
+
+    return render(request, 'updateClass.html', context)
 
 
 def deleteClass(request, id):
