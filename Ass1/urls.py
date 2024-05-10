@@ -26,8 +26,8 @@ urlpatterns = [
     path('updateCourse/<int:id>/', views.updateCourse, name='updateCourse'),
     path('deleteCourse/<int:id>/', views.deleteCourse, name='deleteCourse'),
     path('showClasses/', views.showClasses, name='showClasses'),
-    # path('createClass/', views.createClass, name='createClass'),
-    # path('showClass/<int:id>/', views.showClass, name='showClass'),
-    # path('updateClass/<int:id>/', views.updateClass, name='updateClass'),
-    # path('deleteClass/<int:id>/', views.deleteClass, name='deleteClass'),
+    path('createClass/', views.createClass, name='createClass'),
+    path('showClass/<int:id>/', views.showClass, name='showClass'),
+    path('updateClass/<int:id>/', views.updateClass, name='updateClass'),
+    path('deleteClass/<int:id>/', views.deleteClass, name='deleteClass'),
 ]

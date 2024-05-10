@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 
-from Ass1.models import Semester, Course
+from Ass1.models import Semester, Course, Class, Student, StudentEnrolment, Lecturer
 
 
 # Create your views here.
@@ -246,5 +246,43 @@ def deleteCourse(request, id):
 
 
 def showClasses(request):
+    classes = Class.objects.all()
+    return render(request, 'showClasses.html', {'classes': classes})
 
-    return None
+
+def showClass(request, id):
+    classs = Class.objects.get(id=id)
+    return render(request, 'showClass.html', {'class': classs})
+
+
+def createClass(request):
+    if request.method == 'POST':
+        number = request.POST.get('Number')
+        semester = request.POST.get('Semester')
+        course = request.POST.get('Course')
+        lecturer = request.POST.get('Lecturer')
+        classs = Class(number=number, semester=semester, course=course, lecturer=lecturer)
+        classs.save()
+    return redirect('showClasses')
+
+
+def updateClass(request, id):
+    classs = Class.objects.get(id=id)
+    if request.method == 'POST':
+        number = request.POST.get('Number')
+        semester = request.POST.get('Semester')
+        course = request.POST.get('Course')
+        lecturer = request.POST.get('Lecturer')
+        classs.number = number
+        classs.semester = semester
+        classs.course = course
+        classs.lecturer = lecturer
+        classs.save()
+        return redirect('showClasses')
+    return render(request, 'showClass.html', {'class': classs})
+
+
+def deleteClass(request, id):
+    classs = Class.objects.get(id=id)
+    classs.delete()
+    return redirect('showClasses')

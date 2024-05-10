@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Classes
+{% endblock %}
+{% block content %}
+    {% for class in classes %}
+        <p>
+            <a href="{% url "showClass" class.id %}">
+                {{ class.id }} - {{ class.number }}
+            </a>
+            <a href="{% url 'updateClass' class.id %}" class="btn btn-danger">
+                Update
+            </a>
+            <a href="{% url "deleteClass" class.id %}" class="btn btn-danger">
+                Delete
+            </a>
+        </p>
+    {% endfor %}
+    <a href="{% url 'createClass' %}" class="btn btn-primary">Create New Class</a>
+{% endblock %}
