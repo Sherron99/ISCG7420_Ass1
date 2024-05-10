@@ -45,7 +45,7 @@ class Student(models.Model): #Student Model
     DOB = models.DateField()
 
     def __str__(self):
-        return self.firstName + self.lastName
+        return self.firstName + self.email
 
 
 class StudentEnrolment(models.Model): #Student Enrolment Model

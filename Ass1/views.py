@@ -128,7 +128,6 @@ def registerLecturer(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        course = request.POST.get('course')
         dob = request.POST.get('dob')
 
         # Create User instance
@@ -136,10 +135,11 @@ def registerLecturer(request):
         user.groups.add(Group.objects.get(name='Lecturers'))
 
         # Create Student instance
-        student = Student.objects.create(user=user, course=course, date_of_birth=dob)
+        lecturer = Lecturer.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
+        lecturer.save()
 
         # Add any other logic or redirects as needed
-        return redirect('student_dashboard')
+        return redirect('showLecturers')
 
     # Render the registration form
     return render(request, 'registerStudent.html')
