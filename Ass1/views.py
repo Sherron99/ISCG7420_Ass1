@@ -329,19 +329,29 @@ def createClass(request):
 
 
 def updateClass(request, id):
+    semester_choices = Semester.objects.all()
+    course_choices = Course.objects.all()
+    lecturer_choices = Lecturer.objects.all()
+
+    context = {
+        'semester_choices': semester_choices,
+        'course_choices': course_choices,
+        'lecturer_choices': lecturer_choices,
+    }
+
     classs = Class.objects.get(id=id)
     if request.method == 'POST':
-        number = request.POST.get('Number')
-        semester = request.POST.get('Semester')
-        course = request.POST.get('Course')
-        lecturer = request.POST.get('Lecturer')
+        number = request.POST.get('number')
+        semester = request.POST.get('semester')
+        course = request.POST.get('course')
+        lecturer = request.POST.get('lecturer')
         classs.number = number
         classs.semester = semester
         classs.course = course
         classs.lecturer = lecturer
         classs.save()
         return redirect('showClasses')
-    return render(request, 'showClass.html', {'class': classs})
+    return render(request, 'showClass.html', {'class': classs, 'context': context})
 
 
 def deleteClass(request, id):
