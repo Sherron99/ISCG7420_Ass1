@@ -306,6 +306,7 @@ def showClasses(request):
 
 def showClass(request, id):
     class_obj = Class.objects.get(id=id)
+
     semester = class_obj.semester
     course = class_obj.course
     lecturer = class_obj.lecturer
@@ -314,7 +315,7 @@ def showClass(request, id):
     course_choices = Course.objects.all()
     lecturer_choices = Lecturer.objects.all()
 
-    return render(request, 'showClass.html', {'class_obj': class_obj,
+    return render(request, 'showClass.html', {'class': class_obj,
                                                'semester': semester,
                                                'course': course,
                                                'lecturer': lecturer,
