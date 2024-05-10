@@ -263,7 +263,8 @@ def createClass(request):
         lecturer = request.POST.get('lecturer')
         classs = Class(number=number, semester=semester, course=course, lecturer=lecturer)
         classs.save()
-    return redirect('showClasses')
+        return redirect('showClasses')
+    return render(request, 'createClass.html')
 
 
 def updateClass(request, id):

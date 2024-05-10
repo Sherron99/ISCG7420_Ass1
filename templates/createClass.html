@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    Create Class Page
+{% endblock %}
+{% block content %}
+    <form action="{% url 'createClass' %}" method="post">
+        {% csrf_token %}
+        <p>Number:</p>
+        <p><input type="text" name="number" value="{{ class.number }}"></p>
+        <p>Semester:</p>
+        <p><input type="text" name="semester" value="{{ class.semester }}"></p>
+        <p>Course:</p>
+        <p><input type="text" name="course" value="{{ class.course }}"></p>
+        <p>Lecturer:</p>
+        <p><input type="text" name="lecturer" value="{{ class.lecturer }}"></p>
+        <input type="submit" value="CREATE">
+    </form>
+{% endblock %}
