@@ -112,7 +112,7 @@ def registerStudent(request):
 
         # Create Student instance
         student = Student.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
-        student.save()
+        student.save() #遇到的问题是：我一开始只使用了user = User.objects.create_user()...但是没有对管理后台里的Student class进行创建。导致登陆了管理系统，Student列表一直没有显示数据
 
         # Add any other logic or redirects as needed
         return redirect('showStudents')
@@ -307,6 +307,16 @@ def showClass(request, id):
 
 
 def createClass(request):
+    semester_choices = Semester.objects.all()
+    course_choices = Course.objects.all()
+    lecturer_choices = Lecturer.objects.all()
+
+    context = {
+        'semester_choices': semester_choices,
+        'course_choices': course_choices,
+        'lecturer_choices': lecturer_choices,
+    }
+
     if request.method == 'POST':
         number = request.POST.get('number')
         semester = request.POST.get('semester')
@@ -315,7 +325,7 @@ def createClass(request):
         classs = Class(number=number, semester=semester, course=course, lecturer=lecturer)
         classs.save()
         return redirect('showClasses')
-    return render(request, 'createClass.html')
+    return render(request, 'createClass.html', context)
 
 
 def updateClass(request, id):

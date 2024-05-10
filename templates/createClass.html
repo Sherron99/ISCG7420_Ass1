@@ -8,11 +8,25 @@
         <p>Number:</p>
         <p><input type="text" name="number" value="{{ class.number }}"></p>
         <p>Semester:</p>
-        <p><input type="text" name="semester" value="{{ class.semester }}"></p>
+        <p>
+            <select name="semester">
+                {% for semester_choice in semester_choices %}
+                    <option value="{{ semester_choice }}">{{ semester_choice }}</option>
+                {% endfor %}
+            </select>
+        </p>
         <p>Course:</p>
-        <p><input type="text" name="course" value="{{ class.course }}"></p>
+            <select name="course">
+                {% for course_choice in course_choices %}
+                    <option value="{{ course_choice }}">{{ course_choice }}</option>
+                {% endfor %}
+            </select>
         <p>Lecturer:</p>
-        <p><input type="text" name="lecturer" value="{{ class.lecturer }}"></p>
+            <select name="lecturer">
+                {% for lecturer_choice in lecturer_choices %}
+                    <option value ="{{ lecturer_choice }}">{{ lecturer_choice }}</option>
+                {% endfor %}
+            </select>
         <input type="submit" value="CREATE">
     </form>
 {% endblock %}
