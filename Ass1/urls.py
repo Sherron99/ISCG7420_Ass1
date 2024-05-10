@@ -31,5 +31,4 @@ urlpatterns = [
     path('showClass/<int:id>/', views.showClass, name='showClass'),
     path('updateClass/<int:id>/', views.updateClass, name='updateClass'),
     path('deleteClass/<int:id>/', views.deleteClass, name='deleteClass'),
-    path('lectureToClass')
 ]
