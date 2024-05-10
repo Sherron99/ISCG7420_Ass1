@@ -257,10 +257,10 @@ def showClass(request, id):
 
 def createClass(request):
     if request.method == 'POST':
-        number = request.POST.get('Number')
-        semester = request.POST.get('Semester')
-        course = request.POST.get('Course')
-        lecturer = request.POST.get('Lecturer')
+        number = request.POST.get('number')
+        semester = request.POST.get('semester')
+        course = request.POST.get('course')
+        lecturer = request.POST.get('lecturer')
         classs = Class(number=number, semester=semester, course=course, lecturer=lecturer)
         classs.save()
     return redirect('showClasses')
