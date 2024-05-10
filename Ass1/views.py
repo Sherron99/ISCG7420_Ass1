@@ -322,6 +322,7 @@ def createClass(request):
         semester_id = request.POST.get('semester')  # Retrieve semester ID
         course_id = request.POST.get('course')      # Retrieve course ID
         lecturer_id = request.POST.get('lecturer')  # Retrieve lecturer ID
+        #出现的问题：刚开始用的是直接将页面上的semester/course/lecturer都保存了，可是他们是name字符串，而不是id！没有办法保存的呀！
 
         # Get semester, course, and lecturer instances
         semester = Semester.objects.get(pk=semester_id)
@@ -349,9 +350,15 @@ def updateClass(request, id):
     classs = Class.objects.get(id=id)
     if request.method == 'POST':
         number = request.POST.get('number')
-        semester = request.POST.get('semester')
-        course = request.POST.get('course')
-        lecturer = request.POST.get('lecturer')
+        semester_id = request.POST.get('semester')  # Retrieve semester ID
+        course_id = request.POST.get('course')      # Retrieve course ID
+        lecturer_id = request.POST.get('lecturer')  # Retrieve lecturer ID
+
+        # Get semester, course, and lecturer instances
+        semester = Semester.objects.get(pk=semester_id)
+        course = Course.objects.get(pk=course_id)
+        lecturer = Lecturer.objects.get(pk=lecturer_id)
+
         classs.number = number
         classs.semester = semester
         classs.course = course

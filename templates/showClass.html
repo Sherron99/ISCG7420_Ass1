@@ -8,6 +8,8 @@
         <p><input type="hidden" name="id" value="{{ class.id }}"></p>
         <p>Number:</p>
         <p><input type="text" name="number" value="{{ class.number }}"></p>
+        <p>Semester:</p>
+        <p>
             <select name="semester"> <!-- 在这里我们依然给select赋予了名字，是因为我们需要在view里面接收这个名字 -->
                 {% for semester_choice in semester_choices %}
                     <option value="{{ semester_choice.id }}">{{ semester_choice }}</option>
