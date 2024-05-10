@@ -306,22 +306,7 @@ def showClasses(request):
 
 def showClass(request, id):
     class_obj = Class.objects.get(id=id)
-
-    semester = class_obj.semester
-    course = class_obj.course
-    lecturer = class_obj.lecturer
-
-    semester_choices = Semester.objects.all()
-    course_choices = Course.objects.all()
-    lecturer_choices = Lecturer.objects.all()
-
-    return render(request, 'showClass.html', {'class': class_obj,
-                                               'semester': semester,
-                                               'course': course,
-                                               'lecturer': lecturer,
-                                               'semester_choices': semester_choices,
-                                               'course_choices': course_choices,
-                                               'lecturer_choices': lecturer_choices})
+    return render(request, 'showClass.html', {'class': class_obj,})
 
 
 def createClass(request):
