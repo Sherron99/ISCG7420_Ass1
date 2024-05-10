@@ -108,6 +108,7 @@ def registerStudent(request):
         # Create User instance
         # Create User instance
         user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+        user.groups.add(Group.objects.get(name='Students'))
 
         # Create Student instance
         student = Student.objects.create(user=user, date_of_birth=dob)
@@ -131,9 +132,10 @@ def registerLecturer(request):
 
         # Create User instance
         user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+        user.groups.add(Group.objects.get(name='Lecturers'))
 
         # Create Student instance
-        lecturer = Lecturer.objects.create(user=user, firstname=first_name, lastname=last_name, email=email, course=course, dob=dob)
+        student = Student.objects.create(user=user, course=course, date_of_birth=dob)
 
         # Add any other logic or redirects as needed
         return redirect('student_dashboard')
