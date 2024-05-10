@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Classes
+{% endblock %}
+{% block content %}
+    {% for class in classes %}
+        <p>
+            <a href="{% url "showClass" class.id %}">
+                {{ class.id }} - {{ class.number }}
+            </a>
+            <a href="{% url 'updateClass' class.id %}" class="btn btn-danger">
+                AssignALecturerToThisClass
+            </a>
+        </p>
+    {% endfor %}
+{% endblock %}

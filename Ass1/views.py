@@ -377,3 +377,20 @@ def deleteClass(request, id):
     classs = Class.objects.get(id=id)
     classs.delete()
     return redirect('showClasses')
+
+
+def assignLecturerToClass(request):
+    classes = Class.objects.all()
+    return render(request, 'assignLecturerToClass.html', {'classes': classes})
+
+
+def removeLecturerFromClass(request):
+    return None
+
+
+def changeLecturerToClass(request):
+    return None
+
+
+def showLecturerToClass(request):
+    return None

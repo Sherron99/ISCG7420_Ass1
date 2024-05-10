@@ -31,4 +31,8 @@ urlpatterns = [
     path('showClass/<int:id>/', views.showClass, name='showClass'),
     path('updateClass/<int:id>/', views.updateClass, name='updateClass'),
     path('deleteClass/<int:id>/', views.deleteClass, name='deleteClass'),
+    path('assignLecturerToClass/', views.assignLecturerToClass, name='assignLecturerToClass'),
+    path('removeLecturerFromClass/', views.removeLecturerFromClass, name='removeLecturerFromClass'),
+    path('changeLecturerToClass/', views.changeLecturerToClass, name='changeLecturerToClass'),
+    path('showLecturerToClass/', views.showLecturerToClass, name='showLecturerToClass'),
 ]

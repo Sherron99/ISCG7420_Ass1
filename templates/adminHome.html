@@ -10,6 +10,10 @@
     <button><a href="{% url 'showClasses' %}">Manage Classes</a></button>
     <button><a href="{% url 'showStudents' %}">Manage Students</a></button>
     <button><a href="{% url 'showLecturers' %}">Manage Lecturers</a></button><br>
-    <button><a href="{% url 'lectureToClass' %}">Lecture to Class</a></button>
+    <p>Lecturer to Class</p>
+    <button><a href="{% url 'assignLecturerToClass' %}">Assign Lecture to Class</a></button>
+    <button><a href="{% url 'removeLecturerFromClass' %}">Remove Lecture from Class</a></button>
+    <button><a href="{% url 'changeLecturerToClass' %}">Change Lecturer to Class</a></button>
+    <button><a href="{% url 'showLecturerToClass' %}">Show Lecturer to Class</a></button>
 {% endblock %}
 </body>
