@@ -106,10 +106,11 @@ def registerStudent(request):
         dob = request.POST.get('dob')
 
         # Create User instance
+        # Create User instance
         user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
 
         # Create Student instance
-        student = Student.objects.create(user=user, firstname=first_name, lastname=last_name, email=email, dob=dob)
+        student = Student.objects.create(user=user, date_of_birth=dob)
 
         # Add any other logic or redirects as needed
         return redirect('student_dashboard')

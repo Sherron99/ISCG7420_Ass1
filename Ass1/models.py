@@ -4,7 +4,7 @@ from django.db import models
 class Semester(models.Model): #Semester Model
     year = models.IntegerField()
     semester = models.IntegerField()
-    courses = models.ManyToManyField('Course')
+    courses = models.ManyToManyField('Course', blank=True, null=True)
     #course 和 semester是多对多关系，那么ManyToManyField放在哪一个class里面，取决于哪一个逻辑会更自然或查询更频繁
 
     def __str__(self):
@@ -31,8 +31,8 @@ class Lecturer(models.Model): #Lecturer Model
 class Class(models.Model): #Class Model
     number = models.IntegerField(unique=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE, related_name='classes_taught') #related_name指定反向关系的名称
     students = models.ManyToManyField('Student', through='StudentEnrolment')#through指定关系的表名
 
     def __str__(self):
