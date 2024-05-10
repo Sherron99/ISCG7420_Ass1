@@ -112,6 +112,7 @@ def registerStudent(request):
 
         # Create Student instance
         student = Student.objects.create(user=user, date_of_birth=dob)
+        student.save()
 
         # Add any other logic or redirects as needed
         return redirect('student_dashboard')
