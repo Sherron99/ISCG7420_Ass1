@@ -29,7 +29,7 @@ class Lecturer(models.Model): #Lecturer Model
         return self.firstName + self.lastName
 
 class Class(models.Model): #Class Model
-    number = models.IntegerField(unique=True)
+    number = models.CharField(max_length=100, unique=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
     lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE, related_name='classes_taught') #related_name指定反向关系的名称
