@@ -115,7 +115,7 @@ def registerStudent(request):
         student.save()
 
         # Add any other logic or redirects as needed
-        return redirect('student_dashboard')
+        return redirect('showStudents')
 
     # Render the registration form
     return render(request, 'registerStudent.html')
