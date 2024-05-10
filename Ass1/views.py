@@ -370,7 +370,7 @@ def updateClass(request, id):
         'lecturer_choices': lecturer_choices,
     }
 
-    return render(request, 'updateClass.html', context)
+    return render(request, 'showClass.html', context)
 
 
 def deleteClass(request, id):
