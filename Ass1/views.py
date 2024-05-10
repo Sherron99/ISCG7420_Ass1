@@ -319,11 +319,18 @@ def createClass(request):
 
     if request.method == 'POST':
         number = request.POST.get('number')
-        semester = request.POST.get('semester')
-        course = request.POST.get('course')
-        lecturer = request.POST.get('lecturer')
-        classs = Class(number=number, semester=semester, course=course, lecturer=lecturer)
-        classs.save()
+        semester_id = request.POST.get('semester')  # Retrieve semester ID
+        course_id = request.POST.get('course')      # Retrieve course ID
+        lecturer_id = request.POST.get('lecturer')  # Retrieve lecturer ID
+
+        # Get semester, course, and lecturer instances
+        semester = Semester.objects.get(pk=semester_id)
+        course = Course.objects.get(pk=course_id)
+        lecturer = Lecturer.objects.get(pk=lecturer_id)
+
+        class_instance = Class(number=number, semester=semester, course=course, lecturer=lecturer)
+        class_instance.save()
+
         return redirect('showClasses')
     return render(request, 'createClass.html', context)
 
