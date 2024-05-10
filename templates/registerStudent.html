@@ -3,7 +3,7 @@
 Login page
 {% endblock %}
 {% block content %}
-    <form action="{% url 'registerUser' %}" method="post">
+    <form action="{% url 'registerStudent' %}" method="post">
         {% csrf_token %}
         <p>UserName:</p>
         <p><input type="text" name="username" placeholder="username"></p>
@@ -15,8 +15,10 @@ Login page
         <p><input type="text" name="last_name" placeholder="last name">
         <p>Email</p>
         <p><input type="email" name="email" placeholder="email"></p>
+        <p>DOB</p>
+        <p><input type="date" name="dob" placeholder="dob"></p>
         <p>Role</p>
-        <p><input type="text" name="role" placeholder="type your identity"></p>
+        <p>Student</p>
         <input type="submit" value="Register">
     </form>
 {% endblock %}

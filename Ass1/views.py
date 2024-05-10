@@ -36,43 +36,45 @@ def logout_view(request):
     return redirect('login')
 
 
-def registerUser(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        role = request.POST.get('role')
-
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
-
-        # 根据角色添加用户到相应的组
-        if role == 'Lecturer':
-            group_name = 'Lecturers'
-        elif role == 'Student':
-            group_name = 'Students'
-        else:
-            group_name = 'Administrators'
-
-        # 获取或创建对应的组
-        group, created = Group.objects.get_or_create(name=group_name)
-        # group是第一个返回值。它是从数据库中获取的或新创建的 Group 对象的实例。无论是找到一个已存在的组还是新建了一个组，group 变量都会被赋值为该组的实例。
-        # created: 这是第二个返回值，一个布尔类型的变量。它指示 Group 对象是被创建还是已经存在：
-        # get_or_create 尝试获取一个已存在的数据库记录，或者在不存在时创建它
-        user.groups.add(group)
-
-        if role == 'Lecturer':
-            return redirect('showLecturers')
-        elif role == 'Student':
-            return redirect('showStudents')
-        else:
-            return redirect('login')  # 或者其他默认页面
-
-    return render(request, 'registerUser.html')
+# def registerUser(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         first_name = request.POST.get('first_name')
+#         last_name = request.POST.get('last_name')
+#         email = request.POST.get('email')
+#         role = request.POST.get('role')
+#
+#         user = User.objects.create_user(username=username, email=email, password=password)
+#         user.first_name = first_name
+#         user.last_name = last_name
+#         user.save()
+#
+#         # 根据角色添加用户到相应的组
+#         if role == 'Lecturer':
+#             group_name = 'Lecturers'
+#             Lecturer.objects.create(firstName=first_name, lastName=last_name, email=email)
+#         elif role == 'Student':
+#             group_name = 'Students'
+#             Student.objects.create(firstName=first_name, lastName=last_name, email=email)
+#         else:
+#             group_name = 'Administrators'
+#
+#         # 获取或创建对应的组
+#         group, created = Group.objects.get_or_create(name=group_name)
+#         # group是第一个返回值。它是从数据库中获取的或新创建的 Group 对象的实例。无论是找到一个已存在的组还是新建了一个组，group 变量都会被赋值为该组的实例。
+#         # created: 这是第二个返回值，一个布尔类型的变量。它指示 Group 对象是被创建还是已经存在：
+#         # get_or_create 尝试获取一个已存在的数据库记录，或者在不存在时创建它
+#         user.groups.add(group)
+#
+#         if role == 'Lecturer':
+#             return redirect('showLecturers')
+#         elif role == 'Student':
+#             return redirect('showStudents')
+#         else:
+#             return redirect('login')  # 或者其他默认页面
+#
+#     return render(request, 'registerUser.html')
 
     # 1:
     #     if role == 'Lecturer':
@@ -92,6 +94,51 @@ def registerUser(request):
 #     return render(request, 'showStudents.html', {'user': user})
 # else:
 #     return render(request, 'login.html', {'user': user})
+
+def registerStudent(request):
+    if request.method == 'POST':
+        # Collect form data
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        dob = request.POST.get('dob')
+
+        # Create User instance
+        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+
+        # Create Student instance
+        student = Student.objects.create(user=user, firstname=first_name, lastname=last_name, email=email, dob=dob)
+
+        # Add any other logic or redirects as needed
+        return redirect('student_dashboard')
+
+    # Render the registration form
+    return render(request, 'registerStudent.html')
+
+def registerLecturer(request):
+    if request.method == 'POST':
+        # Collect form data
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        course = request.POST.get('course')
+        dob = request.POST.get('dob')
+
+        # Create User instance
+        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+
+        # Create Student instance
+        lecturer = Lecturer.objects.create(user=user, firstname=first_name, lastname=last_name, email=email, course=course, dob=dob)
+
+        # Add any other logic or redirects as needed
+        return redirect('student_dashboard')
+
+    # Render the registration form
+    return render(request, 'registerStudent.html')
 
 
 # 下面这串代码我是想显示出该用户的信息
