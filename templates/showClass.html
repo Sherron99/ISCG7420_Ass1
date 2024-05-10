@@ -3,16 +3,16 @@
     Class page
 {% endblock %}
 {% block content %}
-    <form action="{% url 'updateClass' class.id %}" method="post">
+    <form action="{% url 'updateClass' class_obj.id %}" method="post">
         {% csrf_token %}
-        <p><input type="hidden" name="id" value="{{ class.id }}"></p>
+        <p><input type="hidden" name="id" value="{{ class_obj.id }}"></p>
         <p>Number:</p>
-        <p><input type="text" name="number" value="{{ class.number }}"></p>
+        <p><input type="text" name="number" value="{{ class_obj.number }}"></p>
         <p>Semester:</p>
         <p>
             <select name="semester"> <!-- 在这里我们依然给select赋予了名字，是因为我们需要在view里面接收这个名字 -->
                 {% for semester_choice in semester_choices %}
-                    <option value="{{ semester_choice.id }}">{{ semester_choice }}</option>
+                    <option value="{{ semester_choice.id }}" {% if semester_choice.id == semester.id %} selected {% endif %}>{{ semester_choice }}</option>
                 {% endfor %}
             </select>
         </p>
@@ -20,7 +20,7 @@
         <p>
            <select name="course">
                 {% for course_choice in course_choices %}
-                    <option value="{{ course_choice.id }}">{{ course_choice }}</option>
+                    <option value="{{ course_choice.id }}" {% if course_choice.id == course.id %} selected {% endif %}>{{ course_choice }}</option>
                 {% endfor %}
             </select>
         </p>
@@ -28,7 +28,7 @@
         <p>
             <select name="lecturer">
                 {% for lecturer_choice in lecturer_choices %}
-                    <option value ="{{ lecturer_choice.id }}">{{ lecturer_choice }}</option>
+                    <option value ="{{ lecturer_choice.id }}" {% if lecturer_choice.id == lecturer.id %} selected {% endif %}>{{ lecturer_choice }}</option>
                 {% endfor %}
             </select>
         </p>
