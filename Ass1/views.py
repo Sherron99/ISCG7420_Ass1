@@ -275,9 +275,11 @@ def showCourses(request):
     courses = Course.objects.all()
     return render(request, 'showCourses.html', {'courses': courses})
 
+
 def showCourse(request, id):
     course = Course.objects.get(id=id)
     return render(request, 'showCourse.html', {'course': course})
+
 
 def updateCourse(request, id):
     course = Course.objects.get(id=id)
@@ -289,6 +291,7 @@ def updateCourse(request, id):
         course.save()
         return redirect('showCourses')
     return render(request, 'showCourse.html', {'course': course})
+
 
 def deleteCourse(request, id):
     course = Course.objects.get(id=id)
@@ -307,18 +310,7 @@ def showClass(request, id):
     course = classs.course
     lecturer = classs.lecturer
 
-    # Fetch all semester, course, and lecturer choices
-    semester_choices = Semester.objects.all()
-    course_choices = Course.objects.all()
-    lecturer_choices = Lecturer.objects.all()
-
-    return render(request, 'showClass.html', {'class': classs,
-                                              'semester_choices': semester_choices,
-                                              'course_choices': course_choices,
-                                              'lecturer_choices': lecturer_choices,
-                                              'semester': semester,
-                                              'course': course,
-                                              'lecturer': lecturer})
+    return render(request, 'showClass.html', {'class': classs, 'semester': semester, 'course': course, 'lecturer': lecturer})
 
 
 def createClass(request):
