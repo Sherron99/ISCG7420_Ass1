@@ -39,5 +39,4 @@ urlpatterns = [
     path('saveAndShowClassesWithLecturer/<int:id>/', views.saveAndShowClassesWithLecturer, name='saveAndShowClassesWithLecturer'),
     path('RemoveALecturerFromThisClass/<int:id>/', views.RemoveALecturerFromThisClass, name='RemoveALecturerFromThisClass'),
     path('removeLecturerFromAClass/<int:id>/', views.removeLecturerFromAClass, name='removeLecturerFromAClass'),
-    path('removeLecturerToClass', views.removeLecturerToClass, name='removeLecturerToClass'),
 ]
