@@ -3,16 +3,16 @@
     Update Class
 {% endblock %}
 {% block content %}
-    <form action="{% url 'saveAndShowClassesWithLecturer' classs.id %}" method="post">
+    <form action="{% url 'saveAndShowClassesWithLecturer' class_obj.id %}" method="post">
         {% csrf_token %}
         <p>Class Number:</p>
-        <a {{ classs.number }}></a>
+        <a {{ class_obj.number }}></a>
         <p>Semester:</p>
     <!--下面的代码中我们有一个selected（布尔属性//专门用来指示下拉菜单中的某个选项是否被预选中），当class.semester.id等于这个选项时，selected = true，直接跳出循环这个选项就会被显示出来-->
         <p>Semester:</p>
-        <a {{ classs.semester.semester }}></a>
+        <a {{ class_obj.semester.semester }}></a>
         <p>Course:</p>
-        <a {{ classs.course.name }}></a>
+        <a {{ class_obj.course.name }}></a>
         <p>Lecturer:</p>
         <p>
             <select name="lecturer">
