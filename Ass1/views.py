@@ -409,7 +409,7 @@ def removeLecturerFromClass(request):
     return redirect('removeLecturerToClass.html')
 
 def removeLecturerToClass(request):
-    return redirect('RemoveALecturerFromThisClass')
+    return render(request, 'removeLecturerToClass.html')
 
 def RemoveALecturerFromThisClass(request, id):
     classC = request.POST.get(id=id)
