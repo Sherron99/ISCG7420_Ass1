@@ -419,14 +419,17 @@ def saveAndShowClassesWithLecturer(request, id):
 #
 def removeLecturerFromAClass(request, id):
     classC = get_object_or_404(Class, id=id)
-    lecturer = request.POST.get('lecturer')
-    if lecturer:
+    lecturer_id = request.POST.get('lecturer')
+
+    if lecturer_id == '':  # 如果用户没有选择讲师
+        messages.error(request, 'One class must have only one lecturer')
+        return redirect('removeLecturer', id=id)
+    else:  # 如果用户选择了一个讲师
+        lecturer = get_object_or_404(Lecturer, id=lecturer_id)
         classC.lecturer = lecturer
         classC.save()
         return redirect('removeLecturerFromClass')
-    else:
-        messages.error(request, 'One class must have only one lecturer')
-        return redirect('removeLecturer', id=id)
+
 
 def removeLecturerFromClass(request):
     classes = Class.objects.all()
