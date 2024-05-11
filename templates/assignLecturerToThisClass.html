@@ -5,6 +5,7 @@
 {% block content %}
     <form action="{% url 'saveAndShowClassesWithLecturer' classs.id %}" method="post">
         {% csrf_token %}
+        <p><input type="hidden" name="id" value="{{ classs.id }}"></p>
         <p>Class Number:</p>
         <a {{ classs.number }}></a>
         <p>Semester:</p>
@@ -16,7 +17,7 @@
         <p>Lecturer:</p>
         <p>
             <select name="lecturer">
-                {% for lecturer in lecturers %}
+                {% for lecturer in lecturers %}y
                     <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }} + {{ lecturer.lastName }}</option>
                 {% endfor %}
             </select>
