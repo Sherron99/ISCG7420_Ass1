@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Classes
+{% endblock %}
+{% block content %}
+    <p>Choose a class to remove:</p>
+    <select name="class">
+        {% for class in classes %}
+            <option value="{{ class.id }}">{{ class.number }}{{ class.lecturer }}</option>
+        {% endfor %}
+    </select>
+    <a href="{% url 'removeLecturer' class.id %}" class="btn btn-danger">
+        RemoveTheLecturerFromThisClass
+    </a>
+{% endblock %}

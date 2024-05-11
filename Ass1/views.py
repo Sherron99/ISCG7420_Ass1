@@ -405,18 +405,18 @@ def saveAndShowClassesWithLecturer(request, id):
     return redirect('assignLecturerToClass')
 
 
-def removeLecturerFromClass(request):
-    classes = Class.objects.all()
-    return render(request, 'removeLecturerToClass.html', {'classes': classes})
-
-
-def RemoveALecturerFromThisClass(request, id):
-    if request.method == 'POST':
-        class_id = request.POST.get(id=id)
-        lecturers = Lecturer.objects.all()
-        return render(request, 'removeLecturerToThisClass.html', {'lecturers': lecturers, 'id': class_id})
-
-
+# def removeLecturerFromClass(request):
+#     classes = Class.objects.all()
+#     return render(request, 'removeLecturerToClass.html', {'classes': classes})
+#
+#
+# def RemoveALecturerFromThisClass(request, id):
+#     if request.method == 'POST':
+#         class_id = request.POST.get(id=id)
+#         lecturers = Lecturer.objects.all()
+#         return render(request, 'removeLecturerToThisClass.html', {'lecturers': lecturers, 'id': class_id})
+#
+#
 def removeLecturerFromAClass(request, id):
     classC = request.POST.get(id=id)
     lecturer = request.POST.get('lecturer')
@@ -427,7 +427,15 @@ def removeLecturerFromAClass(request, id):
     else:
         # 使用Django的消息框架显示提示
         messages.error(request, 'One class must have only one lecturer')
-        return redirect('RemoveALecturerFromThisClass')
+        return redirect('removeLecturer')
+
+def removeLecturerFromClass(request):
+    classes = Class.objects.all()
+    return render(request, 'showAllClasses.html', {'classes': classes})
+
+def removeLecturer(request, id):
+    classDe = Class.objects.get(id=id)
+    return render(request, 'showClassDe.html', {'classDe': classDe})
 
 def changeLecturerToClass(request):
     return None

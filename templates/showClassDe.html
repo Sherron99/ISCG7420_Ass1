@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+    Update Class
+{% endblock %}
+{% block content %}
+    <form action="{% url 'removeLecturerFromAClass' classDe.id %}" method="post">
+        {% csrf_token %}
+        <p><input type="hidden" name="classID" value="{{ classDe.id }}"></p>
+        <p>Class Number: {{ classDe.number }}</p>
+        <p>Semester: {{ classDe.semester }}</p>
+        <p>Course: {{ classDe.course }}</p>
+        <p>Lecturer:
+            <select name="lecturer">
+                <option value = null></option>
+                {% for lecturer in lecturers %}
+                    <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }}{{ lecturer.lastName }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <input type="submit" value="SAVE">
+    </form>
+{% endblock %}
