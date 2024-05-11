@@ -5,10 +5,10 @@
 {% block content %}
     <form action="{% url 'removeLecturerFromAClass' class.id %}" method="post">
         {% csrf_token %}
-        <p><input type="hidden" name="id" value="{{ class.id }}"></p>
-        <p>Class Number: {{ class.number }}</p>
-        <p>Semester: {{ class.semester }}</p>
-        <p>Course: {{ class.course }}</p>
+        <p><input type="hidden" name="id" value="{{ class_id.id }}"></p>
+        <p>Class Number: {{ class_id.number }}</p>
+        <p>Semester: {{ class_id.semester }}</p>
+        <p>Course: {{ class_id.course }}</p>
         <p>Lecturer:
             <select name="lecturer">
                 <option value = null></option>
