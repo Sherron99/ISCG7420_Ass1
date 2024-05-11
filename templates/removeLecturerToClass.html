@@ -3,7 +3,7 @@
     Show All Classes
 {% endblock %}
 {% block content %}
-    <form action="{% url 'RemoveALecturerFromThisClass' class.id %}" method="post">
+    <form action="{% url 'RemoveALecturerFromThisClass' %}" method="post">
         {% csrf_token %}
         <p>Choose a class to remove:</p>
         <select name="class">
