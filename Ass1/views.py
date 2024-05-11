@@ -396,7 +396,7 @@ def AssignALecturerToThisClass(request, id):
         lecturers = Lecturer.objects.all()
         return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
     else:
-        return redirect("assignLecturerToClass")
+        return redirect('assignLecturerToClass')
 
 
 def saveAndShowClassesWithLecturer(request, id):
