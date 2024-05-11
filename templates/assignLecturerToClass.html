@@ -8,7 +8,7 @@
             <a href="{% url "showClass" class.id %}">
                 {{ class.id }} - {{ class.number }}
             </a>
-            <a href="{% url 'updateClass' class.id %}" class="btn btn-danger">
+            <a href="{% url 'AssignALecturerToThisClass' class.id %}" class="btn btn-danger">
                 AssignALecturerToThisClass
             </a>
         </p>

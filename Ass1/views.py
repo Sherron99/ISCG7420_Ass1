@@ -384,6 +384,18 @@ def assignLecturerToClass(request):
     return render(request, 'assignLecturerToClass.html', {'classes': classes})
 
 
+def AssignALecturerToThisClass(request, id):
+    classs = Class.objects.get(id=id)
+    lecturers = Lecturer.objects.all()
+    return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
+
+def saveAndShowClassesWithLecturer(request, id):
+    classs = Class.objects.get(id=id)
+    lecturer = request.POST.get('lecturer')
+    classs.lecturer = lecturer
+    classs.save()
+    return None
+
 def removeLecturerFromClass(request):
     return None
 

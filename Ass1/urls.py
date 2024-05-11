@@ -32,7 +32,9 @@ urlpatterns = [
     path('updateClass/<int:id>/', views.updateClass, name='updateClass'),
     path('deleteClass/<int:id>/', views.deleteClass, name='deleteClass'),
     path('assignLecturerToClass/', views.assignLecturerToClass, name='assignLecturerToClass'),
+    path('AssignALecturerToThisClass/<int:id>/', views.AssignALecturerToThisClass, name='AssignALecturerToThisClass'),
     path('removeLecturerFromClass/', views.removeLecturerFromClass, name='removeLecturerFromClass'),
     path('changeLecturerToClass/', views.changeLecturerToClass, name='changeLecturerToClass'),
     path('showLecturerToClass/', views.showLecturerToClass, name='showLecturerToClass'),
+    path('saveAndShowClassesWithLecturer/<int:id>/', views.saveAndShowClassesWithLecturer, name='saveAndShowClassesWithLecturer'),
 ]
