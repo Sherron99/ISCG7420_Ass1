@@ -3,12 +3,12 @@
     Show All Classes
 {% endblock %}
 {% block content %}
-    <form action="{% url 'RemoveALecturerFromThisClass' class.id %}" method="post">
+    <form action="{% url 'RemoveALecturerFromThis' class.id %}" method="post">
     <p>Choose a class to remove:</p>
     <select name="class">
         <option value="{{ class.id }}">{{ class.number }}</option>
     </select>
-    <a href="{% url 'RemoveALecturerFromThisClass' class.id %}" class="btn btn-danger">
+    <a href="{% url 'RemoveALecturerFromThis' class.id %}" class="btn btn-danger">
         RemoveALecturerFromThisClass
     </a>
     </form>
