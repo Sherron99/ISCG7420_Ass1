@@ -406,7 +406,7 @@ def saveAndShowClassesWithLecturer(request, id):
 
 
 def removeLecturerFromClass(request):
-    return redirect('removeLecturerToClass.html')
+    return redirect('removeLecturerToClass')
 
 def removeLecturerToClass(request):
     return render(request, 'removeLecturerToClass.html')
