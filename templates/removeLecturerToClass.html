@@ -3,13 +3,14 @@
     Show All Classes
 {% endblock %}
 {% block content %}
-    <form action="{% url 'RemoveALecturerFromThisClass' class.id %}" method="post">
-    <p>Choose a class to remove:</p>
-    <select name="class">
-        <option value="{{ class.id }}">{{ class.number }}</option>
-    </select>
-    <a href="{% url 'RemoveALecturerFromThisClass' class.id %}" class="btn btn-danger">
-        RemoveALecturerFromThisClass
-    </a>
+    <form action="{% url 'RemoveALecturerFromThisClass' %}" method="post">
+        {% csrf_token %}
+        <p>Choose a class to remove:</p>
+        <select name="class">
+            {% for class in classes %}
+                <option value="{{ class.id }}">{{ class.number }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-danger">RemoveALecturerFromThisClass</button>
     </form>
 {% endblock %}
