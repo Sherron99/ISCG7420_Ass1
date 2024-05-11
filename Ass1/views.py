@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -403,9 +404,26 @@ def saveAndShowClassesWithLecturer(request, id):
     classs.save()
     return redirect('assignLecturerToClass')
 
-def removeLecturerFromClass(request):
-    return None
 
+def removeLecturerFromClass(request):
+    return redirect('removeLecturerToClass.html')
+
+def RemoveALecturerFromThisClass(request, id):
+    classC = request.POST.get(id=id)
+    lecturers = Lecturer.objects.all()
+    return render(request, 'removeLecturerToThisClass.html', {'class': classC, 'lecturers': lecturers})
+
+def removeLecturerFromAClass(request, id):
+    classC = request.POST.get(id=id)
+    lecturer = request.POST.get('lecturer')
+    if lecturer:
+        classC.lecturer = lecturer
+        classC.save()
+        return redirect('removeLecturerFromClass')
+    else:
+        # 使用Django的消息框架显示提示
+        messages.error(request, 'One class must have only one lecturer')
+        return redirect('RemoveALecturerFromThisClass')
 
 def changeLecturerToClass(request):
     return None

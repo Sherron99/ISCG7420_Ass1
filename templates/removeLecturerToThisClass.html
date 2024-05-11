@@ -3,7 +3,7 @@
     Update Class
 {% endblock %}
 {% block content %}
-    <form action="{% url 'saveAndShowClassesWithLecturer' class.id %}" method="post">
+    <form action="{% url 'removeLecturerFromAClass' class.id %}" method="post">
         {% csrf_token %}
         <p><input type="hidden" name="id" value="{{ class.id }}"></p>
         <p>Class Number: {{ class.number }}</p>
@@ -11,6 +11,7 @@
         <p>Course: {{ class.course }}</p>
         <p>Lecturer:
             <select name="lecturer">
+                <option value = null></option>
                 {% for lecturer in lecturers %}
                     <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }}{{ lecturer.lastName }}</option>
                 {% endfor %}
