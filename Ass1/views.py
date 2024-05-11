@@ -384,11 +384,19 @@ def assignLecturerToClass(request):
     return render(request, 'assignLecturerToClass.html', {'classes': classes})
 
 
+# def AssignALecturerToThisClass(request, id):
+#     if request.method == 'POST':
+#         classs = Class.objects.get(id=id)
+#         lecturers = Lecturer.objects.all()
+#         return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
+#
 def AssignALecturerToThisClass(request, id):
     if request.method == 'POST':
         classs = Class.objects.get(id=id)
         lecturers = Lecturer.objects.all()
         return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
+    else:
+        return redirect("assignLecturerToClass")
 
 
 def saveAndShowClassesWithLecturer(request, id):
