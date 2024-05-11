@@ -14,7 +14,7 @@
         <p>
             <select name="lecturer">
                 {% for lecturer in lecturers %}y
-                    <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }} + {{ lecturer.lastName }}</option>
+                    <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }}{{ lecturer.lastName }}</option>
                 {% endfor %}
             </select>
         </p>
