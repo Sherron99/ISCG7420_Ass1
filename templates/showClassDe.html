@@ -11,9 +11,9 @@
         <p>Course: {{ classDe.course }}</p>
         <p>Lecturer:
             <select name="lecturer">
-                <option value = null></option>
+                <option value="">--Select Lecturer--</option>
                 {% for lecturer in lecturers %}
-                    <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }}{{ lecturer.lastName }}</option>
+                    <option value="{{ lecturer.id }}">{{ lecturer.firstName }} {{ lecturer.lastName }}</option>
                 {% endfor %}
             </select>
         </p>

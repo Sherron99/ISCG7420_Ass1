@@ -4,10 +4,11 @@
 {% endblock %}
 {% block content %}
     <p>Choose a class to remove:</p>
-    <select name="class">
+    <ul>
         {% for class in classes %}
-            <option value="{{ class.id }}">{{ class.number }}{{ class.lecturer }}</option>
+            <li>{{ class.number }} - {{ class.lecturer }}
+                <a href="{{ class.remove_lecturer_url }}" class="btn btn-danger">Remove Lecturer</a>
+            </li>
         {% endfor %}
-    </select>
-<button><a href="{{ class.remove_lecturer_url }}">Remove Lecturer from Class</a></button>
+    </ul>
 {% endblock %}
