@@ -406,7 +406,9 @@ def saveAndShowClassesWithLecturer(request, id):
 
 
 def removeLecturerFromClass(request):
-    return render(request, 'removeLecturerFromClass.html')
+    classes = Class.objects.all()
+    return render(request, 'removeLecturerToClass.html', {'classes': classes, 'class_id': 0})
+
 
 def RemoveALecturerFromThisClass(request):
     lecturers = Lecturer.objects.all()
