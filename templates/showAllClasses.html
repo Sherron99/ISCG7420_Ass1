@@ -9,7 +9,5 @@
             <option value="{{ class.id }}">{{ class.number }}{{ class.lecturer }}</option>
         {% endfor %}
     </select>
-    <a href="{% url 'removeLecturer' class.id %}" class="btn btn-danger">
-        RemoveTheLecturerFromThisClass
-    </a>
+<button><a href="{{ class.remove_lecturer_url }}">Remove Lecturer from Class</a></button>
 {% endblock %}

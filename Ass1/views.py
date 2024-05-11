@@ -431,7 +431,10 @@ def removeLecturerFromAClass(request, id):
 
 def removeLecturerFromClass(request):
     classes = Class.objects.all()
+    for class_obj in classes:
+        class_obj.remove_lecturer_url = reverse('removeLecturer', args=[class_obj.id])
     return render(request, 'showAllClasses.html', {'classes': classes})
+
 
 def removeLecturer(request, id):
     classDe = Class.objects.get(id=id)
