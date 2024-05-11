@@ -411,10 +411,9 @@ def removeLecturerFromClass(request):
 def removeLecturerToClass(request):
     return render(request, 'removeLecturerToClass.html')
 
-def RemoveALecturerFromThisClass(request, id):
-    classC = request.POST.get(id=id)
+def RemoveALecturerFromThisClass(request):
     lecturers = Lecturer.objects.all()
-    return render(request, 'removeLecturerToThisClass.html', {'class': classC, 'lecturers': lecturers})
+    return render(request, 'removeLecturerToThisClass.html', {'lecturers': lecturers})
 
 def removeLecturerFromAClass(request, id):
     classC = request.POST.get(id=id)
