@@ -16,6 +16,11 @@
                     <option value="{{ lecturer.id }}">{{ lecturer.firstName }} {{ lecturer.lastName }}</option>
                 {% endfor %}
             </select>
+            {% if error_message %}
+                {% for message in error_message %}
+                    <div class="alert alert-danger">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
         </p>
         <input type="submit" value="SAVE">
     </form>

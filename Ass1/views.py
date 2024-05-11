@@ -441,7 +441,8 @@ def removeLecturerFromClass(request):
 def removeLecturer(request, id):
     classDe = get_object_or_404(Class, id=id)
     lecturers = Lecturer.objects.all()
-    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers})
+    error_message = messages.get_messages(request)
+    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_message': error_message})
 
 def changeLecturerToClass(request):
     return None
