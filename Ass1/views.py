@@ -544,8 +544,6 @@ def showTheStudentDetail(request):
         return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
 
 
-
-
 def submitEnrolment(request, id):
     student = get_object_or_404(Student, id=id)
 
