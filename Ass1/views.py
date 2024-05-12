@@ -481,10 +481,11 @@ def showAllStudents(request):
     return render(request,'showAllStudents.html', {'students': students})
 
 
-def showTheStudentDetail(request, id):
-    theStudentID = Student.objects.get(id=id)
+def showTheStudentDetail(request):
+    # theStudentID = Student.objects.get(id=id)
     if request.method == 'GET':
         allClasses = Class.objects.all()
+        theStudentID = request.GET.get('theStudent')
         return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
 
 
