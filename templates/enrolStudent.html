@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    Enrol Student to Classes
+{% endblock %}
+{% block content %}
+    <h5>Student information:</h5>
+    <p>Student Name: {{ theStudentID.firstName }} {{ theStudentID.lastName }}</p>
+    <p>Student Email: {{ theStudentID.email }}</p>
+    <p>Student DOB: {{ theStudentID.DOB }}</p>
+    <h5>Enrol Student to Classes</h5>
+    <form action="{% url 'submitEnrolment' theStudentID.id %}" method="post">
+        {% csrf_token %}
+        {% for class in allClasses %}
+            <p><input type="checkbox" name="theClasses" value="{{ class.id }}">{{ class.number }}</p>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

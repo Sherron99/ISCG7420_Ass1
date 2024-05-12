@@ -41,5 +41,8 @@ urlpatterns = [
     # path('removeLecturer/<int:id>/', views.removeLecturer, name='removeLecturer'),
     path('showLecturerToClass/', views.showLecturerToClass, name='showLecturerToClass'),
     path('showTheLecturerDetail', views.showTheLecturerDetail, name='showTheLecturerDetail'),
+    path('showAllStudents', views.showAllStudents, name='showAllStudents'),
+    path('showTheStudentDetail/<int:id>/', views.showTheStudentDetail, name='showTheStudentDetail'),
+    path('submitEnrolment/<int:id>/', views.submitEnrolment, name='submitEnrolment'),
 
 ]

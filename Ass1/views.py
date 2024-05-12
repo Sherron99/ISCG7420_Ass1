@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
+from django.utils import timezone
 
 from Ass1.models import Semester, Course, Class, Student, StudentEnrolment, Lecturer
 
@@ -473,3 +474,42 @@ def showTheLecturerDetail(request):
         id = request.GET.get('theLecturer')
         allClasses = Class.objects.filter(lecturer=id)
         return render(request, 'showTheLecturerDetail.html', {'theLecturer': id, 'allClasses': allClasses})
+
+
+def showAllStudents(request):
+    students = Student.objects.all()
+    return render(request,'showAllStudents.html', {'students': students})
+
+
+def showTheStudentDetail(request, id):
+    theStudentID = Student.objects.get(id=id)
+    if request.method == 'GET':
+        allClasses = Class.objects.all()
+        return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
+
+
+
+
+def submitEnrolment(request, id):
+    student = get_object_or_404(Student, id=id)
+
+    if request.method == 'POST':
+        selected_classes = request.POST.getlist('theClasses')
+
+        for class_id in selected_classes:
+            class_obj = get_object_or_404(Class, id=class_id)
+            enrollment, created = StudentEnrolment.objects.get_or_create(
+                studentID=student,
+                classID=class_obj,
+                defaults={
+                    'enrollTime': timezone.now()
+                }
+            )
+
+            if not created:
+                # 如果已存在该学生和课程的记录,则更新 enrollTime
+                enrollment.enrollTime = timezone.now()
+                enrollment.save()
+
+    # 重定向到某个视图或者渲染一个确认页面
+    return redirect('showTheStudentDetail', id=id)
