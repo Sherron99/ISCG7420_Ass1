@@ -7,13 +7,7 @@
     <p>The Lecturer Email: {{ theLecturer.email }}</p>
     <p>The Lecturer DOB: {{ theLecturer.DOB }}</p>
     <p>The Lecturer Courses:</p>
-    {% if theLecturer.courses %}
-        <ul>
-            {% for course in theLecturer.courses %}
-                <li>{{ course.name }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>The Lecturer currently doesn't have any courses</p>
-    {% endif %}
+    {% for class in allClasses %}
+        <li>{{ class.number }}</li>
+    {% endfor %}
 {% endblock %}

@@ -471,5 +471,5 @@ def showLecturerToClass(request):
 def showTheLecturerDetail(request):
     if request.method == 'GET':
         id = request.GET.get('theLecturer')
-        theLecturer = Lecturer.objects.get(id=id)
-        return render(request, 'showTheLecturerDetail.html', {'theLecturer': theLecturer})
+        allClasses = Class.objects.filter(lecturer=id)
+        return render(request, 'showTheLecturerDetail.html', {'theLecturer': id, 'allClasses': allClasses})
