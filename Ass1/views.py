@@ -463,10 +463,13 @@ def removeLecturer(request, id):
     return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_messages': error_messages})
 
 
-
-def changeLecturerToClass(request):
-    return None
-
-
 def showLecturerToClass(request):
-    return None
+    lecturers = Lecturer.objects.all();
+    return render(request, 'chooseALecturer.html',{'lecturers': lecturers})
+
+
+def showTheLecturerDetail(request):
+    if request.method == 'GET':
+        id = request.GET.get('theLecturer')
+        theLecturer = Lecturer.objects.get(id=id)
+        return render(request, 'showTheLecturerDetail.html', {'theLecturer': theLecturer})
