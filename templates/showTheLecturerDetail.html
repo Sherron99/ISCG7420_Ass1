@@ -3,16 +3,17 @@
     Show The Lecturer Detail
 {% endblock %}
 {% block content %}
-    <p>The Lecturer Name: {{ theLecturer.lastName }}{{ theLecturer.firstName }}</p>
+    <p>The Lecturer Name: {{ theLecturer.lastName }} {{ theLecturer.firstName }}</p>
     <p>The Lecturer Email: {{ theLecturer.email }}</p>
     <p>The Lecturer DOB: {{ theLecturer.DOB }}</p>
-    <p>The Lecturer Courses: 
-        if theLecturer.courses == None:
-    <p>The Lecturer currently don't have any courses</p>
-    else 
-    <ul>
-        {% for course in theLecturer.courses %}
-            <li>{{ course.name }}</li>
-        {% endfor %}
-    </ul>
+    <p>The Lecturer Courses:</p>
+    {% if theLecturer.courses %}
+        <ul>
+            {% for course in theLecturer.courses %}
+                <li>{{ course.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>The Lecturer currently doesn't have any courses</p>
+    {% endif %}
 {% endblock %}
