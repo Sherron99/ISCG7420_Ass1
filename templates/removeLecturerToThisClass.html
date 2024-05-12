@@ -1,34 +1,21 @@
 {% extends "base.html" %}
 {% block title %}
-    Show All Classes
+    Update Class
 {% endblock %}
 {% block content %}
-    {% if classes %}
-        <form action="{% url 'RemoveALecturerFromThisClass' %}" method="post">
-            {% csrf_token %}
-            <p>Choose a class:</p>
-            <select name="classChose">
-                {% for class in classes %}
-                    <option value="{{ class.id }}">{{ class.number }}</option>
+    <form action="{% url 'removeLecturerFromAClass' class_obj.id %}" method="post">
+        {% csrf_token %}
+        <p>Class Number: {{ class_obj.number }}</p>
+        <p>Semester: {{ class_obj.semester }}</p>
+        <p>Course: {{ class_obj.course }}</p>
+        <p>Lecturer:
+            <select name="lecturer">
+                <option value="">--Select Lecturer--</option>
+                {% for lecturer in lecturers %}
+                    <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }}{{ lecturer.lastName }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-danger">RemoveALecturerFromThisClass</button>
-        </form>
-    {% else %}
-        <form action="{% url 'removeLecturerFromAClass' class_obj.id %}" method="post">
-            {% csrf_token %}
-            <p>Class Number: {{ class_obj.number }}</p>
-            <p>Semester: {{ class_obj.semester }}</p>
-            <p>Course: {{ class_obj.course }}</p>
-            <p>Lecturer:
-                <select name="lecturer">
-                    <option value="">--Select Lecturer--</option>
-                    {% for lecturer in lecturers %}
-                        <option value="{{ lecturer.id }}" {% if class_obj.lecturer == lecturer %}selected{% endif %}>{{ lecturer.firstName }} {{ lecturer.lastName }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <input type="submit" value="SAVE">
-        </form>
-    {% endif %}
+        </p>
+        <input type="submit" value="SAVE">
+    </form>
 {% endblock %}
