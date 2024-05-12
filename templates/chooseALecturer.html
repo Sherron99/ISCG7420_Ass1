@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     <p>Choose to see all classes of lecturer:</p>
-    <form action="{% url 'showTheLecturerDetail' lecturer.id %}" method="get">
+    <form action="{% url 'showTheLecturerDetail' %}" method="get">
         <!--我刚刚有在url 里面添加lecturer.id，这是错误的。它的作用域仅限于loop里面，所以我们需要用到Lecturer.objects.get(id=theLecturer.id)-->
         <select name="theLecturer">
             {% for lecturer in lecturers %}
