@@ -540,14 +540,15 @@ def showTheStudentDetail(request):
     # theStudentID = Student.objects.get(id=id)
     if request.method == 'GET':
         allClasses = Class.objects.all()
-        theStudentID = request.GET.get('theStudent')
-        return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
+        studentId = request.GET.get('theStudent')
+        theStudent = Student.objects.get(id=studentId)
+        return render(request, 'enrolStudent.html', {'theStudent': theStudent, 'allClasses': allClasses})
 
 
-def submitEnrolment(request, id):
-    student = get_object_or_404(Student, id=id)
-
+def submitEnrolment(request):
     if request.method == 'POST':
+        student_id = request.GET.get('theStudent')
+        student = get_object_or_404(Student, id=student_id)
         selected_classes = request.POST.getlist('theClasses')
 
         for class_id in selected_classes:
@@ -555,16 +556,19 @@ def submitEnrolment(request, id):
             enrollment, created = StudentEnrolment.objects.get_or_create(
                 studentID=student,
                 classID=class_obj,
-                defaults={
-                    'enrollTime': timezone.now()
-                }
+                defaults={'enrollTime': timezone.now()}
             )
 
             if not created:
-                # 如果已存在该学生和课程的记录,则更新 enrollTime
                 enrollment.enrollTime = timezone.now()
                 enrollment.save()
 
-    # 重定向到某个视图或者渲染一个确认页面
-    return redirect('showTheStudentDetail', id=id)
+        # Redirect to success page or display a success message
+        return redirect('showAllStudents')
+
+    # If the request method is GET, render the form template
+    student_id = request.GET.get('theStudent')
+    theStudentID = get_object_or_404(Student, id=student_id)
+    allClasses = Class.objects.all()
+    return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
 
