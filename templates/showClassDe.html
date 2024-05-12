@@ -10,7 +10,7 @@
         <p>Course: {{ classDe.course }}</p>
         <p>Lecturer:
             <select name="lecturer">
-                <option value="">--Select Lecturer--</option>
+                <option value=''>--Select Lecturer--</option>
                 {% for lecturer in lecturers %}
                     <option value="{{ lecturer.id }}">{{ lecturer.firstName }} {{ lecturer.lastName }}</option>
                 {% endfor %}

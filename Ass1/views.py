@@ -446,7 +446,7 @@ def removeLecturerFromAClass(request, id):
     classC = get_object_or_404(Class, id=id)
     lecturer_id = request.POST.get('lecturer')
 
-    if lecturer_id == "":  # 如果用户没有选择讲师
+    if lecturer_id == '':  # 如果用户没有选择讲师
         messages.error(request, 'One class must have one lecturer')
         return redirect('removeLecturer', id=id)
     else:  # 如果用户选择了一个讲师
