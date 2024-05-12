@@ -437,18 +437,17 @@ def saveAndShowClassesWithLecturer(request, id):
 
 def removeLecturerFromClass(request):
     classes = Class.objects.all()
-    for class_obj in classes:
-        class_obj.remove_lecturer_url = reverse('removeLecturer', args=[class_obj.id])
+    # for class_obj in classes:
+    #     class_obj.remove_lecturer_url = reverse('removeLecturer', args=[class_obj.id]) 另一种方式给每一个class创建一个url。我觉得难理解
     return render(request, 'showAllClasses.html', {'classes': classes})
-
 
 
 def removeLecturerFromAClass(request, id):
     classC = get_object_or_404(Class, id=id)
     lecturer_id = request.POST.get('lecturer')
 
-    if lecturer_id == 0:  # 如果用户没有选择讲师
-        messages.error(request, 'One class must have only one lecturer')
+    if lecturer_id == "0":  # 如果用户没有选择讲师
+        messages.error(request, 'One class must have one lecturer')
         return redirect('removeLecturer', id=id)
     else:  # 如果用户选择了一个讲师
         lecturer = get_object_or_404(Lecturer, id=lecturer_id)
@@ -456,11 +455,11 @@ def removeLecturerFromAClass(request, id):
         classC.save()
         return redirect('removeLecturerFromClass')
 
+
 def removeLecturer(request, id):
-    classDe = get_object_or_404(Class, id=id)
+    classDe = Class.objects.get(id=id)
     lecturers = Lecturer.objects.all()
-    error_message = messages.get_messages(request)
-    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_message': error_message})
+    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers})
 
 
 

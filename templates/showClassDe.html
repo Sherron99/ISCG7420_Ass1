@@ -5,22 +5,16 @@
 {% block content %}
     <form action="{% url 'removeLecturerFromAClass' classDe.id %}" method="post">
         {% csrf_token %}
-        <p><input type="hidden" name="classID" value="{{ classDe.id }}"></p>
         <p>Class Number: {{ classDe.number }}</p>
         <p>Semester: {{ classDe.semester }}</p>
         <p>Course: {{ classDe.course }}</p>
         <p>Lecturer:
             <select name="lecturer">
-                <option value="">--Select Lecturer--</option>
+                <option value="0">--Select Lecturer--</option>
                 {% for lecturer in lecturers %}
                     <option value="{{ lecturer.id }}">{{ lecturer.firstName }} {{ lecturer.lastName }}</option>
                 {% endfor %}
             </select>
-            {% if error_message %}
-                {% for message in error_message %}
-                    <div class="alert alert-danger">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
         </p>
         <input type="submit" value="SAVE">
     </form>

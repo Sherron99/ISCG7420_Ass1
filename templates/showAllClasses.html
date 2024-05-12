@@ -7,7 +7,7 @@
     <ul>
         {% for class in classes %}
             <li>{{ class.number }} - {{ class.lecturer }}
-                <a href="{{ class.remove_lecturer_url }}" class="btn btn-danger">Remove Lecturer</a>
+                <a href="{% url 'removeLecturer' class.id %}" class="btn btn-danger">Remove Lecturer</a>
             </li>
         {% endfor %}
     </ul>
