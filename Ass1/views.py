@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
@@ -568,6 +568,9 @@ def submitEnrolment(request):
 
     # If the request method is GET, render the form template
     student_id = request.GET.get('theStudent')
-    theStudentID = get_object_or_404(Student, id=student_id)
-    allClasses = Class.objects.all()
-    return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
+    if student_id:
+        student = get_object_or_404(Student, id=student_id)
+        allClasses = Class.objects.all()
+        return render(request, 'enrolStudent.html', {'theStudent': student, 'allClasses': allClasses})
+    else:
+        return HttpResponseBadRequest("Invalid student ID")
