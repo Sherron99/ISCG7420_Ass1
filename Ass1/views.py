@@ -405,16 +405,27 @@ def saveAndShowClassesWithLecturer(request, id):
     return redirect('assignLecturerToClass')
 
 
+def removeLecturerFromClass(request):
+    classes = Class.objects.all()
+    return render(request, 'removeLecturerToClass.html', {'classes': classes})
+
+
+def RemoveALecturerFromThisClass(request):
+    if request.method == 'POST':
+        class_id = request.POST.get('classChose')
+        class_obj = Class.objects.get(id=class_id)
+        lecturers = Lecturer.objects.all()
+        return render(request, 'removeLecturerToThisClass.html', {'lecturers': lecturers, 'class_obj': class_obj})
+    else:
+        classes = Class.objects.all()
+        return render(request, 'removeLecturerToThisClass.html', {'classes': classes})
+
+
 # def removeLecturerFromClass(request):
 #     classes = Class.objects.all()
-#     return render(request, 'removeLecturerToClass.html', {'classes': classes})
-#
-#
-# def RemoveALecturerFromThisClass(request, id):
-#     if request.method == 'POST':
-#         class_id = request.POST.get(id=id)
-#         lecturers = Lecturer.objects.all()
-#         return render(request, 'removeLecturerToThisClass.html', {'lecturers': lecturers, 'id': class_id})
+#     for class_obj in classes:
+#         class_obj.remove_lecturer_url = reverse('removeLecturer', args=[class_obj.id])
+#     return render(request, 'showAllClasses.html', {'classes': classes})
 #
 #
 def removeLecturerFromAClass(request, id):
@@ -423,26 +434,31 @@ def removeLecturerFromAClass(request, id):
 
     if lecturer_id == '':  # 如果用户没有选择讲师
         messages.error(request, 'One class must have only one lecturer')
-        return redirect('removeLecturer', id=id)
+        return redirect('RemoveALecturerFromThisClass')
     else:  # 如果用户选择了一个讲师
         lecturer = get_object_or_404(Lecturer, id=lecturer_id)
         classC.lecturer = lecturer
         classC.save()
-        return redirect('removeLecturerFromClass')
+        return redirect('RemoveALecturerFromThisClass')
+#
+# def removeLecturerFromAClass(request, id):
+#     classC = get_object_or_404(Class, id=id)
+#     lecturer_id = request.POST.get('lecturer')
+#
+#     if lecturer_id == '':  # 如果用户没有选择讲师
+#         messages.error(request, 'One class must have only one lecturer')
+#         return redirect('removeLecturer', id=id)
+#     else:  # 如果用户选择了一个讲师
+#         lecturer = get_object_or_404(Lecturer, id=lecturer_id)
+#         classC.lecturer = lecturer
+#         classC.save()
+#         return redirect('removeLecturerFromClass')
 
-
-def removeLecturerFromClass(request):
-    classes = Class.objects.all()
-    for class_obj in classes:
-        class_obj.remove_lecturer_url = reverse('removeLecturer', args=[class_obj.id])
-    return render(request, 'showAllClasses.html', {'classes': classes})
-
-
-def removeLecturer(request, id):
-    classDe = get_object_or_404(Class, id=id)
-    lecturers = Lecturer.objects.all()
-    error_message = messages.get_messages(request)
-    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_message': error_message})
+# def removeLecturer(request, id):
+#     classDe = get_object_or_404(Class, id=id)
+#     lecturers = Lecturer.objects.all()
+#     error_message = messages.get_messages(request)
+#     return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_message': error_message})
 
 def changeLecturerToClass(request):
     return None

@@ -1,22 +1,34 @@
 {% extends "base.html" %}
 {% block title %}
-    Update Class
+    Show All Classes
 {% endblock %}
 {% block content %}
-    <form action="{% url 'removeLecturerFromAClass' class.id %}" method="post">
-        {% csrf_token %}
-        <p><input type="hidden" name="id" value="{{ class_id.id }}"></p>
-        <p>Class Number: {{ class_id.number }}</p>
-        <p>Semester: {{ class_id.semester }}</p>
-        <p>Course: {{ class_id.course }}</p>
-        <p>Lecturer:
-            <select name="lecturer">
-                <option value = null></option>
-                {% for lecturer in lecturers %}
-                    <option value ="{{ lecturer.id }}" >{{ lecturer.firstName }}{{ lecturer.lastName }}</option>
+    {% if classes %}
+        <form action="{% url 'RemoveALecturerFromThisClass' %}" method="post">
+            {% csrf_token %}
+            <p>Choose a class:</p>
+            <select name="classChose">
+                {% for class in classes %}
+                    <option value="{{ class.id }}">{{ class.number }}</option>
                 {% endfor %}
             </select>
-        </p>
-        <input type="submit" value="SAVE">
-    </form>
+            <button type="submit" class="btn btn-danger">RemoveALecturerFromThisClass</button>
+        </form>
+    {% else %}
+        <form action="{% url 'removeLecturerFromAClass' class_obj.id %}" method="post">
+            {% csrf_token %}
+            <p>Class Number: {{ class_obj.number }}</p>
+            <p>Semester: {{ class_obj.semester }}</p>
+            <p>Course: {{ class_obj.course }}</p>
+            <p>Lecturer:
+                <select name="lecturer">
+                    <option value="">--Select Lecturer--</option>
+                    {% for lecturer in lecturers %}
+                        <option value="{{ lecturer.id }}" {% if class_obj.lecturer == lecturer %}selected{% endif %}>{{ lecturer.firstName }} {{ lecturer.lastName }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <input type="submit" value="SAVE">
+        </form>
+    {% endif %}
 {% endblock %}
