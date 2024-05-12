@@ -44,5 +44,6 @@ urlpatterns = [
     path('showAllStudents', views.showAllStudents, name='showAllStudents'),
     path('showTheStudentDetail/<int:id>/', views.showTheStudentDetail, name='showTheStudentDetail'),
     path('submitEnrolment/<int:id>/', views.submitEnrolment, name='submitEnrolment'),
+    path('send_email_out/', views.send_email_out, name='send_email_out'),
 
 ]

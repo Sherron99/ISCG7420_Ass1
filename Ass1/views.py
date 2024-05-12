@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
+from django.core.files.storage import FileSystemStorage
+from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
@@ -476,6 +478,59 @@ def showTheLecturerDetail(request):
         return render(request, 'showTheLecturerDetail.html', {'theLecturer': id, 'allClasses': allClasses})
 
 
+def file_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+
+        import pandas as pd
+        excel_data = pd.read_excel(myfile)
+        data = pd.DataFrame(excel_data)
+        studentIDs = data['studentID'].tolist()
+        firstnames = data['firstname'].tolist()
+        lastnames = data['lastname'].tolist()
+        emails = data['email'].tolist()
+        DOBs = data['DOB'].tolist()
+
+        i = 0
+        while i < len(studentIDs):
+            student = Student.objects.create(studentID=studentIDs[i], firstname=firstnames[i], lastname=lastnames[i]
+                                             , email=emails[i], DOB=DOBs[i])
+
+            student.save()
+            user = User.objects.create_user(username=student.email, password=student.DOB.strftime('%Y%m%d'))
+            user.save()
+
+            i = i + 1
+
+        return render(request, 'file_upload_form.html', {
+            'uploaded_file_url': uploaded_file_url
+
+        })
+
+    return render(request, 'file_upload_form.html')
+
+
+def send_email_out(request):
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        body = request.POST['body']
+        from_email = request.POST['from_email']
+        to_email = request.POST['to_email']
+        send_mail(subject, body, from_email, [to_email])
+
+    return render(request, 'send_email_out.html')
+
+
+
+
+
+
+
+
+
 def showAllStudents(request):
     students = Student.objects.all()
     return render(request,'showAllStudents.html', {'students': students})
@@ -514,3 +569,4 @@ def submitEnrolment(request, id):
 
     # 重定向到某个视图或者渲染一个确认页面
     return redirect('showTheStudentDetail', id=id)
+

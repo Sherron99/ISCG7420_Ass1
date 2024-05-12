@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -135,3 +135,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SENDGRID_API_KEY = os.getenv('2jSTtcDbQOaqK0JgIyWp7g')
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'gCl50beOStC9Sqc73WUngw' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = "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"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
