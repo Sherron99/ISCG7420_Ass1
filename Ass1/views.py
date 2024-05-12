@@ -547,7 +547,7 @@ def showTheStudentDetail(request):
 
 def submitEnrolment(request):
     if request.method == 'POST':
-        student_id = request.GET.get('theStudent')
+        student_id = request.POST.get('theStudent')
         student = get_object_or_404(Student, id=student_id)
         selected_classes = request.POST.getlist('theClasses')
 
@@ -571,4 +571,3 @@ def submitEnrolment(request):
     theStudentID = get_object_or_404(Student, id=student_id)
     allClasses = Class.objects.all()
     return render(request, 'enrolStudent.html', {'theStudentID': theStudentID, 'allClasses': allClasses})
-
