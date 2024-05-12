@@ -459,7 +459,8 @@ def removeLecturerFromAClass(request, id):
 def removeLecturer(request, id):
     classDe = Class.objects.get(id=id)
     lecturers = Lecturer.objects.all()
-    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers})
+    error_messages = messages.get_messages(request)
+    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_messages': error_messages})
 
 
 

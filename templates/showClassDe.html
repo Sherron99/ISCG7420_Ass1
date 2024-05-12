@@ -3,6 +3,13 @@
     Update Class
 {% endblock %}
 {% block content %}
+    {% if error_messages %}
+        {% for message in error_messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    
     <form action="{% url 'removeLecturerFromAClass' classDe.id %}" method="post">
         {% csrf_token %}
         <p>Class Number: {{ classDe.number }}</p>
