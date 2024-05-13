@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Student's Classes
+{% endblock %}
+{% block content %}
+    <h5>Student information:</h5>
+    <p>Name: {{ student.firstName }} {{ student.lastName }}</p>
+    <p>Email: {{ student.email }}</p>
+    <p>DOB: {{ student.DOB }}</p>
+    <h5>Classes the Student is currently enrolled in</h5>
+    <p>Tick the classes you want to remove</p>
+    <form action="{% url 'updateTheStudentClasses' student.id %}" method="post">
+        {% csrf_token %}
+        <p>{% for class in classes %}</p>
+            <input type="checkbox" name="theClass" value="{{ class.id }}">
+            <ul>{{ class.number }}</ul>
+        {% endfor %}
+    </form>
+    <input type="submit" value="REMOVE">
+{% endblock %}

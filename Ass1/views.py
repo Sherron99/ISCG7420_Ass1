@@ -80,13 +80,13 @@ def logout_view(request):
 #
 #     return render(request, 'registerUser.html')
 
-    # 1:
-    #     if role == 'Lecturer':
-    #         return HttpResponseRedirect(reverse('showLecturers')) #根据不同的角色，进入到相应的界面
-    #     elif role == 'Student':
-    #         return HttpResponseRedirect(reverse('showStudents'))
-    #
-    # return render(request, 'registerUser.html')
+# 1:
+#     if role == 'Lecturer':
+#         return HttpResponseRedirect(reverse('showLecturers')) #根据不同的角色，进入到相应的界面
+#     elif role == 'Student':
+#         return HttpResponseRedirect(reverse('showStudents'))
+#
+# return render(request, 'registerUser.html')
 
 
 # 上面标注的1:是正确的，和没有被注释的代码都是可以使用的。只有用了redirect('')或者HttpResponseRedirect()才能更新界面
@@ -111,18 +111,20 @@ def registerStudent(request):
 
         # Create User instance
         # Create User instance
-        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+        user = User.objects.create_user(username=username, password=password, first_name=first_name,
+                                        last_name=last_name, email=email)
         user.groups.add(Group.objects.get(name='Students'))
 
         # Create Student instance
         student = Student.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
-        student.save() #遇到的问题是：我一开始只使用了user = User.objects.create_user()...但是没有对管理后台里的Student class进行创建。导致登陆了管理系统，Student列表一直没有显示数据
+        student.save()  # 遇到的问题是：我一开始只使用了user = User.objects.create_user()...但是没有对管理后台里的Student class进行创建。导致登陆了管理系统，Student列表一直没有显示数据
 
         # Add any other logic or redirects as needed
         return redirect('showStudents')
 
     # Render the registration form
     return render(request, 'registerStudent.html')
+
 
 def registerLecturer(request):
     if request.method == 'POST':
@@ -135,7 +137,8 @@ def registerLecturer(request):
         dob = request.POST.get('dob')
 
         # Create User instance
-        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+        user = User.objects.create_user(username=username, password=password, first_name=first_name,
+                                        last_name=last_name, email=email)
         user.groups.add(Group.objects.get(name='Lecturers'))
 
         # Create Student instance
@@ -200,7 +203,7 @@ def updateStudent(request, id):
         user.role = role
         user.save()
         return redirect('showStudents')
-    return render(request, 'showStudent.html', {'user': user})#因为showStudent用的是user，所以我们不用更改
+    return render(request, 'showStudent.html', {'user': user})  # 因为showStudent用的是user，所以我们不用更改
 
 
 def deleteStudent(request, id):
@@ -256,7 +259,8 @@ def updateSemester(request, id):
         semester.semester = semesterr
         semester.save()
         return redirect('showSemesters')
-    return render(request, 'showSemester.html', {'semester': semester})#context里的内容一定要和showSemester.html里的名字对应(semester.id)
+    return render(request, 'showSemester.html',
+                  {'semester': semester})  # context里的内容一定要和showSemester.html里的名字对应(semester.id)
 
 
 def deleteSemester(request, id):
@@ -267,8 +271,8 @@ def deleteSemester(request, id):
 
 def createCourse(request):
     if request.method == 'POST':
-        code = request.POST.get('Code') #这里的我改为大写Code就可以创建了！！！！
-        name = request.POST.get('Name') #注意：括号里的名字写什么取决于你的html input的name是什么！！！
+        code = request.POST.get('Code')  # 这里的我改为大写Code就可以创建了！！！！
+        name = request.POST.get('Name')  # 注意：括号里的名字写什么取决于你的html input的name是什么！！！
         course = Course(code=code, name=name)
         course.save()
         return redirect('showCourses')
@@ -310,7 +314,7 @@ def showClasses(request):
 
 def showClass(request, id):
     class_obj = Class.objects.get(id=id)
-    return render(request, 'showClass.html', {'class': class_obj,})
+    return render(request, 'showClass.html', {'class': class_obj, })
 
 
 def createClass(request):
@@ -327,9 +331,9 @@ def createClass(request):
     if request.method == 'POST':
         number = request.POST.get('number')
         semester_id = request.POST.get('semester')  # Retrieve semester ID
-        course_id = request.POST.get('course')      # Retrieve course ID
+        course_id = request.POST.get('course')  # Retrieve course ID
         lecturer_id = request.POST.get('lecturer')  # Retrieve lecturer ID
-        #出现的问题：刚开始用的是直接将页面上的semester/course/lecturer都保存了，可是他们是name字符串，而不是id！没有办法保存的呀！
+        # 出现的问题：刚开始用的是直接将页面上的semester/course/lecturer都保存了，可是他们是name字符串，而不是id！没有办法保存的呀！
 
         # Get semester, course, and lecturer instances
         semester = Semester.objects.get(pk=semester_id)
@@ -463,12 +467,13 @@ def removeLecturer(request, id):
     classDe = Class.objects.get(id=id)
     lecturers = Lecturer.objects.all()
     error_messages = messages.get_messages(request)
-    return render(request, 'showClassDe.html', {'classDe': classDe, 'lecturers': lecturers, 'error_messages': error_messages})
+    return render(request, 'showClassDe.html',
+                  {'classDe': classDe, 'lecturers': lecturers, 'error_messages': error_messages})
 
 
 def showLecturerToClass(request):
     lecturers = Lecturer.objects.all();
-    return render(request, 'chooseALecturer.html',{'lecturers': lecturers})
+    return render(request, 'chooseALecturer.html', {'lecturers': lecturers})
 
 
 def showTheLecturerDetail(request):
@@ -526,7 +531,7 @@ def send_email_out(request):
 
 def showAllStudents(request):
     students = Student.objects.all()
-    return render(request,'showAllStudents.html', {'students': students})
+    return render(request, 'showAllStudents.html', {'students': students})
 
 
 def showTheStudentDetail(request):
@@ -536,16 +541,18 @@ def showTheStudentDetail(request):
         student = Student.objects.get(id=studentId)
 
         # 获取该学生已经注册的课程 ID 列表
-        enrolled_classes = StudentEnrolment.objects.filter(student=student).values_list('Class__id', flat=True) #chatgpt写的
-        #上面这串代码，是从studentenrolment表中获取student的实例（当然我们也可以通过主键来filter都可以）。values_list括号里第一个是写想要查询的字段，例如Class__id（是可以这样写的），然后将其转换为一个列表
-        #上面这串代码，是多对多的表（bridge table），如果我们想要通过一个class id 获取另一个class id的方法。
-        #所以最终enroleed_classes的效果是[1,3,5]....这就是flat=true的效果
+        enrolled_classes = StudentEnrolment.objects.filter(student=student).values_list('Class__id',
+                                                                                        flat=True)  # chatgpt写的
+        # 上面这串代码，是从studentenrolment表中获取student的实例（当然我们也可以通过主键来filter都可以）。values_list括号里第一个是写想要查询的字段，例如Class__id（是可以这样写的），然后将其转换为一个列表
+        # 上面这串代码，是多对多的表（bridge table），如果我们想要通过一个class id 获取另一个class id的方法。
+        # 所以最终enroleed_classes的效果是[1,3,5]....这就是flat=true的效果
 
         # 获取所有课程,但排除已经注册的课程
         allClasses = Class.objects.exclude(id__in=enrolled_classes)
-        #__in是一种查询方式，我们查询所有class的id，搜索出不在enrolled_classes里的所有class
+        # __in是一种查询方式，我们查询所有class的id，搜索出不在enrolled_classes里的所有class
 
         return render(request, 'enrolStudent.html', {'theStudent': student, 'allClasses': allClasses})
+
 
 def submitEnrolment(request, id):
     if request.method == 'POST':
@@ -556,7 +563,7 @@ def submitEnrolment(request, id):
 
     enrollment = StudentEnrolment.objects.create(student=selected_student, Class=selected_class, grade=None,
                                                  enrolTime=timezone.now(), gradeTime=None)
-    #遇到的问题是：我直接保存了class的id，这是不对的。当我们要创建一个新的实例的时候，我们必须指定关联的对象（实例，就是一个对象包含了所有属性）。
+    # 遇到的问题是：我直接保存了class的id，这是不对的。当我们要创建一个新的实例的时候，我们必须指定关联的对象（实例，就是一个对象包含了所有属性）。
     enrollment.save()
 
     # Redirect to success page or display a success message
@@ -572,6 +579,33 @@ def showStudentClasses(request):
     if request.method == 'GET':
         getStudentID = request.GET.get('theStudent')
         studentObj = Student.objects.get(id=getStudentID)
-        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class', flat=True)
+        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class',
+                                                                                           flat=True)  # 我们这里用的是class实例
+        # 上面这行代码：由于student和class之间有一个StudentEnrolment（bridge table），我们通过filter，来获取同一个student的所有class
         classes = Class.objects.filter(id__in=enrolled_classes)
     return render(request, 'showStudentClasses.html', {'student': studentObj, 'classes': classes})
+
+
+def showAllStudentstoRemoveClasses(request):
+    allStudents = Student.objects.all()
+    return render(request, 'showAllStudentsClassesToRemove.html', {'allStudents': allStudents})
+
+
+def removeClasses(request):
+    if request.method == 'GET':
+        getStudentID = request.GET.get('theStudent')
+        studentObj = Student.objects.get(id=getStudentID)
+        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class', flat=True)
+        classes = Class.objects.filter(id__in=enrolled_classes)
+        return render(request, 'removeClasses.html', {'student': studentObj, 'classes': classes})
+
+
+def updateTheStudentClasses(request, id):
+    if request.method == 'POST':
+        selected_student = Student.objects.get(id=id)
+        class_id = request.POST.get('theClass')
+        selected_class = Class.objects.get(id=class_id)
+
+        studentEnrollment = StudentEnrolment.objects.get(student=selected_student, Class=selected_class)
+        studentEnrollment.delete()
+        return redirect('showAllStudentsClasses')

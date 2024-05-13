@@ -48,4 +48,7 @@ urlpatterns = [
     path('file_upload/', views.file_upload, name='file_upload'),
     path('showAllStudentsClasses/', views.showAllStudentsClasses, name='showAllStudentsClasses'),
     path('showStudentClasses/', views.showStudentClasses, name='showStudentClasses'),
+    path('showAllStudentstoRemoveClasses/', views.showAllStudentstoRemoveClasses, name='showAllStudentstoRemoveClasses'),
+    path('removeClasses/', views.removeClasses, name='removeClasses'),
+    path('updateTheStudentClasses/<int:id>/', views.updateTheStudentClasses, name='updateTheStudentClasses'),
 ]
