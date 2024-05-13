@@ -43,7 +43,7 @@ urlpatterns = [
     path('showTheLecturerDetail', views.showTheLecturerDetail, name='showTheLecturerDetail'),
     path('showAllStudents', views.showAllStudents, name='showAllStudents'),
     path('showTheStudentDetail/', views.showTheStudentDetail, name='showTheStudentDetail'),
-    path('submitEnrolment/', views.submitEnrolment, name='submitEnrolment'),
+    path('submitEnrolment/<int:id>/', views.submitEnrolment, name='submitEnrolment'),
     path('send_email_out/', views.send_email_out, name='send_email_out'),
     path('file_upload/', views.file_upload, name='file_upload'),
 ]

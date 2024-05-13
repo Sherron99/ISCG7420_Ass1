@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.utils import timezone
+from pip._vendor.rich.style.Style import null
 
 from Ass1.models import Semester, Course, Class, Student, StudentEnrolment, Lecturer
 
@@ -545,32 +546,15 @@ def showTheStudentDetail(request):
         return render(request, 'enrolStudent.html', {'theStudent': theStudent, 'allClasses': allClasses})
 
 
-def submitEnrolment(request):
+def submitEnrolment(request, id):
     if request.method == 'POST':
-        student_id = request.POST.get('theStudent.id')
-        student = get_object_or_404(Student, id=student_id)
-        selected_classes = request.POST.getlist('theClasses')
+        student_id = Student.objects.get(id=id)
+        selected_class = request.POST.get('theClass')
+        # 上两步获取相应的studentID和classID
 
-        for class_id in selected_classes:
-            class_obj = get_object_or_404(Class, id=class_id)
-            enrollment, created = StudentEnrolment.objects.get_or_create(
-                studentID=student,
-                classID=class_obj,
-                defaults={'enrollTime': timezone.now()}
-            )
+    enrollment = StudentEnrolment.objects.create(studentID=student_id, classID=selected_class, grade=None,
+                                                 enrollTime=timezone.now(), gradeTime=None)
+    enrollment.save()
 
-            if not created:
-                enrollment.enrollTime = timezone.now()
-                enrollment.save()
-
-        # Redirect to success page or display a success message
-        return redirect('showAllStudents')
-
-    # If the request method is GET, render the form template
-    student_id = request.GET.get('theStudent')
-    if student_id:
-        student = get_object_or_404(Student, id=student_id)
-        allClasses = Class.objects.all()
-        return render(request, 'enrolStudent.html', {'theStudent': student, 'allClasses': allClasses})
-    else:
-        return HttpResponseBadRequest("Invalid student ID")
+    # Redirect to success page or display a success message
+    return redirect('showAllStudents')

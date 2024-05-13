@@ -8,10 +8,10 @@
     <p>Student Email: {{ theStudent.email }}</p>
     <p>Student DOB: {{ theStudent.DOB }}</p>
     <h5>Enrol Student to Classes</h5>
-    <form action="{% url 'submitEnrolment' %}" method="post">
+    <form action="{% url 'submitEnrolment' theStudent.id %}" method="post">
         {% csrf_token %}
         {% for class in allClasses %}
-            <p><input type="checkbox" name="theClasses" value="{{ class.id }}">{{ class.number }}</p>
+            <p><input type="radio" name="theClass" value="{{ class.id }}">{{ class.number }}</p>
         {% endfor %}
         <input type="submit" value="Submit">
     </form>
