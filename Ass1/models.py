@@ -51,6 +51,6 @@ class Student(models.Model): #Student Model
 class StudentEnrolment(models.Model): #Student Enrolment Model
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     Class = models.ForeignKey(Class, on_delete=models.CASCADE)
-    grade = models.IntegerField()
+    grade = models.IntegerField(blank=True, null=True)
     enrolTime = models.DateTimeField(auto_now_add=True) #auto_now_add=True 在创建的时候自动添加
-    gradeTime = models.DateTimeField(auto_now=True) #auto_now=True 在修改的时候自动修改
+    gradeTime = models.DateTimeField(auto_now=True,blank=True, null=True) #auto_now=True 在修改的时候自动修改
