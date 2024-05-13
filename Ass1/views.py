@@ -572,5 +572,6 @@ def showStudentClasses(request):
     if request.method == 'GET':
         getStudentID = request.GET.get('theStudent')
         studentObj = Student.objects.get(id=getStudentID)
-        studentEnrollment = StudentEnrolment.objects.filter(student=studentObj).values_list('Class__id', flat=True)
-    return render(request, 'showStudentClasses.html', {'student': studentObj, 'studentEnrollment': studentEnrollment})
+        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class', flat=True)
+        classes = Class.objects.filter(id__in=enrolled_classes)
+    return render(request, 'showStudentClasses.html', {'student': studentObj, 'classes': classes})
