@@ -597,7 +597,7 @@ def removeClasses(request):
         studentObj = Student.objects.get(id=getStudentID)
         enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class', flat=True)
         classes = Class.objects.filter(id__in=enrolled_classes)
-        return render(request, 'removeClasses.html', {'student': studentObj, 'classes': classes})
+        return render(request, 'removeStudentClass.html', {'student': studentObj, 'classes': classes})
 
 
 def updateTheStudentClasses(request, id):
