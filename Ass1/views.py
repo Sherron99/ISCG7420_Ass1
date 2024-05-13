@@ -524,13 +524,6 @@ def send_email_out(request):
     return render(request, 'send_email_out.html')
 
 
-
-
-
-
-
-
-
 def showAllStudents(request):
     students = Student.objects.all()
     return render(request,'showAllStudents.html', {'students': students})
@@ -543,10 +536,14 @@ def showTheStudentDetail(request):
         student = Student.objects.get(id=studentId)
 
         # 获取该学生已经注册的课程 ID 列表
-        enrolled_classes = StudentEnrolment.objects.filter(student=student).values_list('Class__id', flat=True)
+        enrolled_classes = StudentEnrolment.objects.filter(student=student).values_list('Class__id', flat=True) #chatgpt写的
+        #上面这串代码，是从studentenrolment表中获取student的实例（当然我们也可以通过主键来filter都可以）。values_list括号里第一个是写想要查询的字段，例如Class__id（是可以这样写的），然后将其转换为一个列表
+        #上面这串代码，是多对多的表（bridge table），如果我们想要通过一个class id 获取另一个class id的方法。
+        #所以最终enroleed_classes的效果是[1,3,5]....这就是flat=true的效果
 
         # 获取所有课程,但排除已经注册的课程
         allClasses = Class.objects.exclude(id__in=enrolled_classes)
+        #__in是一种查询方式，我们查询所有class的id，搜索出不在enrolled_classes里的所有class
 
         return render(request, 'enrolStudent.html', {'theStudent': student, 'allClasses': allClasses})
 
@@ -564,3 +561,16 @@ def submitEnrolment(request, id):
 
     # Redirect to success page or display a success message
     return redirect('showAllStudents')
+
+
+def showAllStudentsClasses(request):
+    allStudents = Student.objects.all()
+    return render(request, 'showAllStudentsClasses.html', {'allStudents': allStudents})
+
+
+def showStudentClasses(request):
+    if request.method == 'GET':
+        getStudentID = request.GET.get('theStudent')
+        studentObj = Student.objects.get(id=getStudentID)
+        studentEnrollment = StudentEnrolment.objects.filter(student=studentObj).values_list('Class__id', flat=True)
+    return render(request, 'showStudentClasses.html', {'student': studentObj, 'studentEnrollment': studentEnrollment})

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Students
+{% endblock %}
+{% block content %}
+    <h5>All Students List</h5>
+    <p>Choose a student</p>
+    <form action="{% url 'showStudentClasses' %}" method="get">
+        <select name="theStudent">
+            <option value="">Select a student</option>
+            {% for theStudent in allStudents %}
+                <option value="{{ theStudent.id }}">{{ theStudent.firstName }} {{ theStudent.lastName }} ({{ theStudent.email }})</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="View Details">
+    </form>
+{% endblock %}

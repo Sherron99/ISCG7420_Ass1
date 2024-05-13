@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    Student's Classes
+{% endblock %}
+{% block content %}
+    <h5>Student information:</h5>
+    <p>Student Name: {{ theStudent.firstName }} {{ theStudent.lastName }}</p>
+    <p>Student Email: {{ theStudent.email }}</p>
+    <p>Student DOB: {{ theStudent.DOB }}</p>
+    <h5>Classes the Student is enrolled to</h5>
+    <p>{% for studentEnrollment in studentEnrollments %}</p>
+    <p>{{ studentEnrollment.theClass.number }}</p>
+    <p>{% endfor %}</p>
+{% endblock %}

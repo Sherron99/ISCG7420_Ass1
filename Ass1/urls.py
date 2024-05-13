@@ -46,4 +46,6 @@ urlpatterns = [
     path('submitEnrolment/<int:id>/', views.submitEnrolment, name='submitEnrolment'),
     path('send_email_out/', views.send_email_out, name='send_email_out'),
     path('file_upload/', views.file_upload, name='file_upload'),
+    path('showAllStudentsClasses/', views.showAllStudentsClasses, name='showAllStudentsClasses'),
+    path('showStudentClasses/', views.showStudentClasses, name='showStudentClasses'),
 ]
