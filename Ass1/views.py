@@ -7,7 +7,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.utils import timezone
-from pip._vendor.rich.style.Style import null
 
 from Ass1.models import Semester, Course, Class, Student, StudentEnrolment, Lecturer
 
