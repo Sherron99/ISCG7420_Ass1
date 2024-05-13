@@ -547,12 +547,14 @@ def showTheStudentDetail(request):
 
 def submitEnrolment(request, id):
     if request.method == 'POST':
-        student_id = Student.objects.get(id=id)
-        selected_class = request.POST.get('theClass')
+        selected_student = Student.objects.get(id=id)
+        class_id = request.POST.get('theClass')
+        selected_class = Class.objects.get(id=class_id)
         # 上两步获取相应的studentID和classID
 
-    enrollment = StudentEnrolment.objects.create(student=student_id, Class=selected_class, grade=None,
+    enrollment = StudentEnrolment.objects.create(student=selected_student, Class=selected_class, grade=None,
                                                  enrolTime=timezone.now(), gradeTime=None)
+    #遇到的问题是：我直接保存了class的id，这是不对的。当我们要创建一个新的实例的时候，我们必须指定关联的对象（实例，就是一个对象包含了所有属性）。
     enrollment.save()
 
     # Redirect to success page or display a success message
