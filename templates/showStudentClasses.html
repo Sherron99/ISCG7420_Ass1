@@ -4,9 +4,9 @@
 {% endblock %}
 {% block content %}
     <h5>Student information:</h5>
-    <p>Student Name: {{ theStudent.firstName }} {{ theStudent.lastName }}</p>
-    <p>Student Email: {{ theStudent.email }}</p>
-    <p>Student DOB: {{ theStudent.DOB }}</p>
+    <p>Student Name: {{ student.firstName }} {{ student.lastName }}</p>
+    <p>Student Email: {{ student.email }}</p>
+    <p>Student DOB: {{ student.DOB }}</p>
     <h5>Classes the Student is enrolled to</h5>
     <p>{% for class in classes %}</p>
         <ul>{{ class.number}}</ul>
