@@ -551,8 +551,8 @@ def submitEnrolment(request, id):
         selected_class = request.POST.get('theClass')
         # 上两步获取相应的studentID和classID
 
-    enrollment = StudentEnrolment.objects.create(studentID=student_id, classID=selected_class, grade=None,
-                                                 enrollTime=timezone.now(), gradeTime=None)
+    enrollment = StudentEnrolment.objects.create(student=student_id, Class=selected_class, grade=None,
+                                                 enrolTime=timezone.now(), gradeTime=None)
     enrollment.save()
 
     # Redirect to success page or display a success message
