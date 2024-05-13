@@ -539,11 +539,16 @@ def showAllStudents(request):
 def showTheStudentDetail(request):
     # theStudentID = Student.objects.get(id=id)
     if request.method == 'GET':
-        allClasses = Class.objects.all()
         studentId = request.GET.get('theStudent')
-        theStudent = Student.objects.get(id=studentId)
-        return render(request, 'enrolStudent.html', {'theStudent': theStudent, 'allClasses': allClasses})
+        student = Student.objects.get(id=studentId)
 
+        # 获取该学生已经注册的课程 ID 列表
+        enrolled_classes = StudentEnrolment.objects.filter(student=student).values_list('Class__id', flat=True)
+
+        # 获取所有课程,但排除已经注册的课程
+        allClasses = Class.objects.exclude(id__in=enrolled_classes)
+
+        return render(request, 'enrolStudent.html', {'theStudent': student, 'allClasses': allClasses})
 
 def submitEnrolment(request, id):
     if request.method == 'POST':
