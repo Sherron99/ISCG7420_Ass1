@@ -579,8 +579,7 @@ def showStudentClasses(request):
     if request.method == 'GET':
         getStudentID = request.GET.get('theStudent')
         studentObj = Student.objects.get(id=getStudentID)
-        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class',
-                                                                                           flat=True)  # 我们这里用的是class实例
+        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class',flat=True)  # 我们这里用的是class实例
         # 上面这行代码：由于student和class之间有一个StudentEnrolment（bridge table），我们通过filter，来获取同一个student的所有class
         classes = Class.objects.filter(id__in=enrolled_classes)
     return render(request, 'showStudentClasses.html', {'student': studentObj, 'classes': classes})
@@ -603,9 +602,12 @@ def removeClasses(request):
 def updateTheStudentClasses(request, id):
     if request.method == 'POST':
         selected_student = Student.objects.get(id=id)
-        class_id = request.POST.get('theClass')
-        selected_class = Class.objects.get(id=class_id)
+        selected_classes = request.POST.get('theClass')
 
-        studentEnrollment = StudentEnrolment.objects.get(student=selected_student, Class=selected_class)
-        studentEnrollment.delete()
+        for class_id in selected_classes:
+            selected_class = Class.objects.get(id=class_id)
+
+        enrollments = StudentEnrolment.objects.filter(student=selected_student, Class=selected_class)
+        enrollments.delete()
+
         return redirect('showAllStudentsClasses')

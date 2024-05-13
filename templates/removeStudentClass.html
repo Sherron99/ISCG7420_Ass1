@@ -11,10 +11,9 @@
     <p>Tick the classes you want to remove</p>
     <form action="{% url 'updateTheStudentClasses' student.id %}" method="post">
         {% csrf_token %}
-        <p>{% for class in classes %}</p>
-            <input type="checkbox" name="theClass" value="{{ class.id }}">
-            <ul>{{ class.number }}</ul>
+        {% for class in classes %}
+            <p><input type="checkbox" name="theClass" value="{{ class.id }}">{{ class.number }}</p>
         {% endfor %}
+        <input type="submit" value="REMOVE">
     </form>
-    <input type="submit" value="REMOVE">
 {% endblock %}
