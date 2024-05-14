@@ -493,7 +493,7 @@ def file_upload(request):
 
         i = 0
         while i < len(emails):
-            student = Student.objects.create(firstname=firstnames[i], lastname=lastnames[i]
+            student = Student.objects.create(firstName=firstnames[i], lastName=lastnames[i]
                                              , email=emails[i], DOB=DOBs[i])
 
             student.save()
