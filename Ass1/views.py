@@ -148,15 +148,12 @@ def registerLecturer(request):
         # Add any other logic or redirects as needed
         return redirect('showLecturers')
 
-    # Render the registration form
-    return render(request, 'registerStudent.html')
-
 
 # 下面这串代码我是想显示出该用户的信息
 
 def showLecturer(request, id):
     user = User.objects.get(id=id)
-    return render(request, 'showStudent.html', {'user': user})
+    return render(request, 'showLecturer.html', {'user': user})
 
 
 def updateLecturer(request, id):
@@ -579,7 +576,8 @@ def showStudentClasses(request):
     if request.method == 'GET':
         getStudentID = request.GET.get('theStudent')
         studentObj = Student.objects.get(id=getStudentID)
-        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class',flat=True)  # 我们这里用的是class实例
+        enrolled_classes = StudentEnrolment.objects.filter(student=studentObj).values_list('Class',
+                                                                                           flat=True)  # 我们这里用的是class实例
         # 上面这行代码：由于student和class之间有一个StudentEnrolment（bridge table），我们通过filter，来获取同一个student的所有class
         classes = Class.objects.filter(id__in=enrolled_classes)
     return render(request, 'showStudentClasses.html', {'student': studentObj, 'classes': classes})
@@ -613,20 +611,20 @@ def updateTheStudentClasses(request, id):
         return redirect('showAllStudentsClasses')
 
 
-def chooseAClass(request,id):
-    lecturer = Lecturer.objects.get(id=id) #获取老师的实例
-    getLecturerClasses = Class.objects.filter(lecturer=lecturer).values_list('Class',flat=True) #不知道这步对不对，我是想通过老师的id获取所有class的id
-
-    return render(request,'displayAllClasses.html',{'Classes':getLecturerClasses})
+def chooseAClass(request, id):
+    lecturer = Lecturer.objects.get(id=id)  # 获取老师的实例
+    getLecturerClasses = Class.objects.filter(lecturer=lecturer).values_list('Class',
+                                                                             flat=True)  # 不知道这步对不对，我是想通过老师的id获取所有class的id
+    return render(request, 'displayAllClasses.html', {'Classes': getLecturerClasses})
 
 
 def markStudentsGrade(request):
-    if request.metho=='GET':
+    if request.metho == 'GET':
         classID = request.GET.get('classChose')
         classObj = Class.objects.get(id=classID)
-        getAllStudent = StudentEnrolment.objects.filter(Class=classID).values_list('student',flat=True)
+        getAllStudent = StudentEnrolment.objects.filter(Class=classID).values_list('student', flat=True)
         allStudentsObjs = Student.objects.filter(id__in=getAllStudent)
-    return render(request,'showAllStudentsWithMarks.html',{'class':classObj,'Students':allStudentsObjs})
+    return render(request, 'showAllStudentsWithMarks.html', {'class': classObj, 'Students': allStudentsObjs})
 
 
 def submitMarks(request):
