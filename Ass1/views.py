@@ -607,10 +607,9 @@ def updateTheStudentClasses(request, id):
         return redirect('showAllStudentsClasses')
 
 
-def chooseAClass(request, user_id):
-    user = User.objects.get(id=user_id)
+def chooseAClass(request, user_email):
+    user = User.objects.get(email=user_email)
     lecturer = Lecturer.objects.get(user=user)  # Assuming a one-to-one relationship between User and Lecturer
-
     lecturer_classes = Class.objects.filter(lecturer=lecturer)
 
     return render(request, 'displayAllClasses.html', {'classes': lecturer_classes})
