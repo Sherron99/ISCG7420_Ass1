@@ -486,15 +486,14 @@ def file_upload(request):
         import pandas as pd
         excel_data = pd.read_excel(myfile)
         data = pd.DataFrame(excel_data)
-        studentIDs = data['studentID'].tolist()
         firstnames = data['firstname'].tolist()
         lastnames = data['lastname'].tolist()
         emails = data['email'].tolist()
         DOBs = data['DOB'].tolist()
 
         i = 0
-        while i < len(studentIDs):
-            student = Student.objects.create(studentID=studentIDs[i], firstname=firstnames[i], lastname=lastnames[i]
+        while i < len(emails):
+            student = Student.objects.create(firstname=firstnames[i], lastname=lastnames[i]
                                              , email=emails[i], DOB=DOBs[i])
 
             student.save()
