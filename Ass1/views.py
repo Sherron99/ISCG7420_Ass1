@@ -609,7 +609,7 @@ def updateTheStudentClasses(request, id):
 
 def chooseAClass(request, user_id):
     user = User.objects.get(id=user_id)
-    lecturer = user.lecturer  # Assuming a one-to-one relationship between User and Lecturer
+    lecturer = Lecturer.objects.get(user=user)  # Assuming a one-to-one relationship between User and Lecturer
 
     lecturer_classes = Class.objects.filter(lecturer=lecturer)
 

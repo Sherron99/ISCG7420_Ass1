@@ -4,7 +4,7 @@
 {% endblock %}
 <body>
 {% block content %}
-    <p>Hello! {{ user.username }}</p> 
-    <button><a href="{% url 'chooseAClass' user.id%}">Manage Your Classes</a></button>
+    <p>Hello! {{ user.username }}</p>
+    <button><a href="{% url 'chooseAClass' user.id %}">Manage Your Classes</a></button>
 {% endblock %}
 </body>
