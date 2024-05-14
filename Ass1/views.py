@@ -476,6 +476,7 @@ def showTheLecturerDetail(request):
         return render(request, 'showTheLecturerDetail.html', {'theLecturer': id, 'allClasses': allClasses})
 
 
+#在我们要实现上传file文件的时候，我们需要在server输入:pip install pandas和 pip install openpyxl
 def file_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
