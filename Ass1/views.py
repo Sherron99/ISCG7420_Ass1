@@ -607,11 +607,13 @@ def updateTheStudentClasses(request, id):
         return redirect('showAllStudentsClasses')
 
 
-def chooseAClass(request, id):
-    lecturer = Lecturer.objects.get(id=id)  # 获取老师的实例
-    getLecturerClasses = Class.objects.filter(lecturer=lecturer).values_list('Class',
-                                                                             flat=True)  # 不知道这步对不对，我是想通过老师的id获取所有class的id
-    return render(request, 'displayAllClasses.html', {'Classes': getLecturerClasses})
+def chooseAClass(request, user_id):
+    user = User.objects.get(id=user_id)
+    lecturer = user.lecturer  # Assuming a one-to-one relationship between User and Lecturer
+
+    lecturer_classes = Class.objects.filter(lecturer=lecturer)
+
+    return render(request, 'displayAllClasses.html', {'classes': lecturer_classes})
 
 
 def markStudentsGrade(request):
