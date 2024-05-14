@@ -128,7 +128,6 @@ def registerStudent(request):
 
 def registerLecturer(request):
     if request.method == 'POST':
-        # Collect form data
         username = request.POST.get('username')
         password = request.POST.get('password')
         first_name = request.POST.get('first_name')
@@ -136,17 +135,14 @@ def registerLecturer(request):
         email = request.POST.get('email')
         dob = request.POST.get('dob')
 
-        # Create User instance
         user = User.objects.create_user(username=username, password=password, first_name=first_name,
                                         last_name=last_name, email=email)
         user.groups.add(Group.objects.get(name='Lecturers'))
 
-        # Create Student instance
         lecturer = Lecturer.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
-        lecturer.save()
 
-        # Add any other logic or redirects as needed
         return redirect('showLecturers')
+    return render(request, 'registerLecturer.html')
 
 
 # 下面这串代码我是想显示出该用户的信息
@@ -175,7 +171,7 @@ def updateLecturer(request, id):
         user.role = role
 
         user.save()
-    return redirect('showLecturer', id=id)
+    return redirect('showLecturers')
 
 
 def showStudent(request, id):
