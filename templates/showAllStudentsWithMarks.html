@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    Show All Students
+{% endblock %}
+{% block content %}
+    <h5>Class Number: {{ class.number }}</h5>
+    <form method="post" action="{% url 'submitMarks' %}">
+        {% csrf_token %}
+        <input type="hidden" name="class_id" value="{{ class.id }}">
+        <ul>
+            {% for student in students %}
+                <li>{{ student.firstName }} {{ student.lastName }}</li>
+                <input type="number" name="mark_{{ student.id }}" min="0" max="100">
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

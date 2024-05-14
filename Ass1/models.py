@@ -32,7 +32,7 @@ class Class(models.Model): #Class Model
     number = models.CharField(max_length=100, unique=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
-    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE, related_name='classes_taught') #related_name指定反向关系的名称
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE, related_name='classes_taught') #这里我们有related_name后，我们是可以通过lecturer来获取所有的与他有关的class。related_name指定反向关系的名称
     students = models.ManyToManyField('Student', through='StudentEnrolment')#through指定关系的表名
 
     def __str__(self):
@@ -50,7 +50,7 @@ class Student(models.Model): #Student Model
 
 class StudentEnrolment(models.Model): #Student Enrolment Model
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    Class = models.ForeignKey(Class, on_delete=models.CASCADE)
+    Class = models.ForeignKey(Class, on_delete=models.CASCADE,related_name="getAllStudentEnrolments")
     grade = models.IntegerField(blank=True, null=True)
     enrolTime = models.DateTimeField(auto_now_add=True) #auto_now_add=True 在创建的时候自动添加
     gradeTime = models.DateTimeField(auto_now=True) #auto_now=True 在修改的时候自动修改

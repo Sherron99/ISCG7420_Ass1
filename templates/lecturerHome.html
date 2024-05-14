@@ -1,1 +1,10 @@
-<p>Hello lecturer</p>
+{% extends "base.html" %}
+{% block title %}
+    Lecturer Home Page
+{% endblock %}
+<body>
+{% block content %}
+    <p>Hello! {{ user.username }}</p> 
+    <button><a href="{% url 'chooseAClass' user.id%}">Manage Your Classes</a></button>
+{% endblock %}
+</body>

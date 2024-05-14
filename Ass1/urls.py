@@ -51,4 +51,7 @@ urlpatterns = [
     path('showAllStudentstoRemoveClasses/', views.showAllStudentstoRemoveClasses, name='showAllStudentstoRemoveClasses'),
     path('removeClasses/', views.removeClasses, name='removeClasses'),
     path('updateTheStudentClasses/<int:id>/', views.updateTheStudentClasses, name='updateTheStudentClasses'),
+    path('chooseAClass/<int:id>/', views.chooseAClass, name='chooseAClass'),
+    path('markStudentsGrade/', views.markStudentsGrade, name='markStudentsGrade'),
+    path('submitMarks/', views.submitMarks, name='submitMarks'),
 ]

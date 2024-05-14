@@ -611,3 +611,39 @@ def updateTheStudentClasses(request, id):
         enrollments.delete()
 
         return redirect('showAllStudentsClasses')
+
+
+def chooseAClass(request,id):
+    lecturer = Lecturer.objects.get(id=id) #获取老师的实例
+    getLecturerClasses = Class.objects.filter(lecturer=lecturer).values_list('Class',flat=True) #不知道这步对不对，我是想通过老师的id获取所有class的id
+
+    return render(request,'displayAllClasses.html',{'Classes':getLecturerClasses})
+
+
+def markStudentsGrade(request):
+    if request.metho=='GET':
+        classID = request.GET.get('classChose')
+        classObj = Class.objects.get(id=classID)
+        getAllStudent = StudentEnrolment.objects.filter(Class=classID).values_list('student',flat=True)
+        allStudentsObjs = Student.objects.filter(id__in=getAllStudent)
+    return render(request,'showAllStudentsWithMarks.html',{'class':classObj,'Students':allStudentsObjs})
+
+
+def submitMarks(request):
+    if request.method == 'POST':
+        class_id = request.POST.get('class_id')
+        selected_class = get_object_or_404(Class, id=class_id)
+        for student in selected_class.students.all():
+            student_id = student.id
+            grade = request.POST.get(f'mark_{student_id}')
+            if grade:
+                enrollment, created = StudentEnrolment.objects.get_or_create(
+                    student=student,
+                    Class=selected_class,
+                    defaults={'grade': grade, 'gradeTime': timezone.now()}
+                )
+                if not created:
+                    enrollment.grade = grade
+                    enrollment.gradeTime = timezone.now()
+                    enrollment.save()
+    return redirect('markStudentsGrade')
