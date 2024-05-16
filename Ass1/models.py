@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -24,7 +25,7 @@ class Lecturer(models.Model): #Lecturer Model
     lastName = models.CharField(max_length=100)
     email = models.CharField(max_length=100, unique=True)
     DOB = models.DateField()
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.firstName + self.lastName
 
@@ -43,6 +44,7 @@ class Student(models.Model): #Student Model
     lastName = models.CharField(max_length=100)
     email = models.CharField(max_length=100, unique=True)
     DOB = models.DateField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.firstName + self.email

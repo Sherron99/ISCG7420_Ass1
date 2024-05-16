@@ -136,10 +136,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SENDGRID_API_KEY = os.getenv('gCl50beOStC9Sqc73WUngw')
+SENDGRID_API_KEY = os.getenv('cnx9KPrzTjG4L7uNnQ-02w')
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'Inclass' # this is exactly the value 'apikey'这里要用api的名称
-EMAIL_HOST_PASSWORD = "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"
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'这里要用api的名称
+EMAIL_HOST_PASSWORD = "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"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+LOGIN_REDIRECT_URL = 'redirect_view'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'

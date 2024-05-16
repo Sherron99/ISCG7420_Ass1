@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.core.files.storage import FileSystemStorage
-from django.core.mail import send_mail
+from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from Ass1.models import Semester, Course, Class, Student, StudentEnrolment, Lecturer
 
@@ -17,23 +18,31 @@ def index(request):
 
 
 # login 界面，检查用户输入账号和密码是否已创建和正确
-def login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user:
-            if user.groups.filter(name='Administrators').exists():
-                return render(request, 'adminHome.html', {'user': user})
-            elif user.groups.filter(name='Lecturers').exists():
-                return render(request, 'lecturerHome.html', {'user': user})
-            else:
-                return render(request, 'studentHome.html', {'user': user})
-        else:
-            return render(request, 'login.html', {'error': 'Invalid username or password'})
-    else:
-        return render(request, 'login.html')
+# def login(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
+#         if user:
+#             if user.groups.filter(name='Administrators').exists():
+#                 return render(request, 'adminHome.html', {'user': user})
+#             elif user.groups.filter(name='Lecturers').exists():
+#                 return render(request, 'lecturerHome.html', {'user': user})
+#             else:
+#                 return render(request, 'studentHome.html', {'user': user})
+#         else:
+#             return render(request, 'login.html', {'error': 'Invalid username or password'})
+#     else:
+#         return render(request, 'login.html')
 
+@login_required
+def redirect_view(request):
+    if request.user.groups.filter(name='Administrators').exists():
+        return render(request, 'adminHome.html')
+    elif request.user.groups.filter(name='Lecturers').exists():
+        return render(request,'lecturerHome.html')
+    else:
+        return render(request,'studentHome.html')
 
 def logout_view(request):
     logout(request)  # 当我们要退出界面的话，请注意，需要用Django内置的logout(request)执行登出操作。
@@ -116,7 +125,8 @@ def registerStudent(request):
         user.groups.add(Group.objects.get(name='Students'))
 
         # Create Student instance
-        student = Student.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
+        student = Student.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob,
+                                         user=user)  # 这里lei给我加了user=user。
         student.save()  # 遇到的问题是：我一开始只使用了user = User.objects.create_user()...但是没有对管理后台里的Student class进行创建。导致登陆了管理系统，Student列表一直没有显示数据
 
         # Add any other logic or redirects as needed
@@ -139,7 +149,7 @@ def registerLecturer(request):
                                         last_name=last_name, email=email)
         user.groups.add(Group.objects.get(name='Lecturers'))
 
-        lecturer = Lecturer.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob)
+        lecturer = Lecturer.objects.create(firstName=first_name, lastName=last_name, email=email, DOB=dob, user=user)
 
         return redirect('showLecturers')
     return render(request, 'registerLecturer.html')
@@ -153,25 +163,27 @@ def showLecturer(request, id):
 
 
 def updateLecturer(request, id):
+    user = User.objects.get(id=id)
+    getLecturerObject = Lecturer.objects.get(user=user)
     if request.method == 'POST':  # 这串代码非常重要，没有的话，直接显示User matching query does not exist.和method是get
-        id = request.POST.get('id')
-        print(id)
         username = request.POST.get('username')
         password = request.POST.get('password')
         firstname = request.POST.get('first_name')
         lastname = request.POST.get('last_name')
         email = request.POST.get('email')
-        role = request.POST.get('role')
-        user = User.objects.get(id=id)
         user.username = username
         user.set_password(password)
         user.first_name = firstname
         user.last_name = lastname
         user.email = email
-        user.role = role
-
+        user.role = Lecturer
         user.save()
-    return redirect('showLecturers')
+        getLecturerObject.firstName = firstname
+        getLecturerObject.lastName = lastname
+        getLecturerObject.email = email
+        getLecturerObject.save()
+        return redirect('showLecturers')
+    return render(request, 'showLecturer.html', {'user': user})
 
 
 def showStudent(request, id):
@@ -181,20 +193,24 @@ def showStudent(request, id):
 
 def updateStudent(request, id):
     user = User.objects.get(id=id)
+    getStudentObject = Student.objects.get(user=user)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         firstname = request.POST.get('first_name')
         lastname = request.POST.get('last_name')
         email = request.POST.get('email')
-        role = request.POST.get('role')
         user.username = username
         user.set_password(password)
         user.first_name = firstname
         user.last_name = lastname
         user.email = email
-        user.role = role
+        user.role = Student
         user.save()
+        getStudentObject.firstName = firstname
+        getStudentObject.lastName = lastname
+        getStudentObject.email = email
+        getStudentObject.save()
         return redirect('showStudents')
     return render(request, 'showStudent.html', {'user': user})  # 因为showStudent用的是user，所以我们不用更改
 
@@ -235,8 +251,15 @@ def createSemester(request):
     if request.method == 'POST':
         year = request.POST.get('Year')
         semester = request.POST.get('Semester')
-        semester = Semester(year=year, semester=semester)
-        semester.save()
+        new_semester = Semester(year=year, semester=semester)
+
+        # 检查是否存在相同的年份和学期
+        existing_semester = Semester.objects.filter(year=year, semester=semester).first()
+        if existing_semester:
+            error_message = 'Semester already exists'
+            return render(request, 'createSemester.html', {'error_message': error_message})
+        else:
+            new_semester.save()
         return redirect('showSemesters')
     return render(request, 'createSemester.html')
 
@@ -391,16 +414,32 @@ def assignLecturerToClass(request):
 #         lecturers = Lecturer.objects.all()
 #         return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
 #
+# def AssignALecturerToThisClass(request, id):
+#     classs = Class.objects.get(id=id)
+#     lecturer = classs.lecturer
+#     if lecturer is not None:
+#         lecturers = [lecturer]  # 将单个讲师对象包装为列表
+#         return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
+#     else:
+#         lecturers = Lecturer.objects.all()
+#     return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
+
 def AssignALecturerToThisClass(request, id):
     classs = Class.objects.get(id=id)
-    lecturers = Lecturer.objects.all()
+    lecturer = classs.lecturer
+    if lecturer is not None:
+        lecturers = [lecturer]  # 将单个讲师对象包装为列表
+        return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
+    else:
+        lecturers = Lecturer.objects.all()
     return render(request, 'assignLecturerToThisClass.html', {'class': classs, 'lecturers': lecturers})
 
 
 def saveAndShowClassesWithLecturer(request, id):
     classs = Class.objects.get(id=id)
-    lecturer = request.POST.get('lecturer')
-    classs.lecturer = lecturer
+    lecturerid = request.POST.get('lecturer')
+    lecturerobj = Lecturer.objects.get(id=lecturerid)
+    classs.lecturer = lecturerobj
     classs.save()
     return redirect('assignLecturerToClass')
 
@@ -443,7 +482,9 @@ def removeLecturerFromClass(request):
 
 
 def removeLecturerFromAClass(request, id):
-    classC = get_object_or_404(Class, id=id)
+    classC = Class.objects.get(id=id)
+    lecturerId = classC.lecturer
+
     lecturer_id = request.POST.get('lecturer')
 
     if lecturer_id == '':  # 如果用户没有选择讲师
@@ -457,26 +498,32 @@ def removeLecturerFromAClass(request, id):
 
 
 def removeLecturer(request, id):
-    classDe = Class.objects.get(id=id)
+    error_message = "A class must have only one lecturer"
+    messages.error(request, error_message)
+    return redirect('removeLecturerFromClass')
+
+
+def updateClassLecturer(request, id):
+    classID = Class.objects.get(id=id)
     lecturers = Lecturer.objects.all()
-    error_messages = messages.get_messages(request)
-    return render(request, 'showClassDe.html',
-                  {'classDe': classDe, 'lecturers': lecturers, 'error_messages': error_messages})
+    return render(request, "changeClassLecturer.html", {'class': classID, 'lecturers': lecturers})
 
 
 def showLecturerToClass(request):
-    lecturers = Lecturer.objects.all();
-    return render(request, 'chooseALecturer.html', {'lecturers': lecturers})
+    lecturers = Lecturer.objects.all()
+    classes = Class.objects.all()
+    return render(request, 'chooseALecturer.html', {'lecturers': lecturers, 'classes': classes})
 
 
 def showTheLecturerDetail(request):
     if request.method == 'GET':
         id = request.GET.get('theLecturer')
+        lecturerObj = Lecturer.objects.get(id=id)
         allClasses = Class.objects.filter(lecturer=id)
-        return render(request, 'showTheLecturerDetail.html', {'theLecturer': id, 'allClasses': allClasses})
+        return render(request, 'showTheLecturerDetail.html', {'Lecturer': lecturerObj, 'allClasses': allClasses})
 
 
-#在我们要实现上传file文件的时候，我们需要在server输入:pip install pandas和 pip install openpyxl
+# 在我们要实现上传file文件的时候，我们需要在server输入:pip install pandas和 pip install openpyxl
 def file_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
@@ -517,9 +564,14 @@ def send_email_out(request):
         body = request.POST['body']
         from_email = request.POST['from_email']
         to_email = request.POST['to_email']
-        send_mail(subject, body, from_email, [to_email])
+        try:
+            send_mail(subject, body, from_email, [to_email])
+        except BadHeaderError:
+            print("Error here:")
+            print(BadHeaderError)
+        return render(request, 'send_email_out.html', {'message': 'Email sent successfully'})
 
-    return render(request, 'send_email_out.html')
+    return render(request, 'send_email_out.html', {'message': ''})
 
 
 def showAllStudents(request):
@@ -558,6 +610,9 @@ def submitEnrolment(request, id):
                                                  enrolTime=timezone.now(), gradeTime=None)
     # 遇到的问题是：我直接保存了class的id，这是不对的。当我们要创建一个新的实例的时候，我们必须指定关联的对象（实例，就是一个对象包含了所有属性）。
     enrollment.save()
+
+    successMessage = "Successfully enrolled " + selected_student.firstName + " " + selected_student.lastName + " in " + selected_class.course.name
+    messages.success(request, successMessage)
 
     # Redirect to success page or display a success message
     return redirect('showAllStudents')
@@ -604,11 +659,14 @@ def updateTheStudentClasses(request, id):
         enrollments = StudentEnrolment.objects.filter(student=selected_student, Class=selected_class)
         enrollments.delete()
 
+        successMessage = "Successfully removed " + selected_student.firstName + " " + selected_student.lastName + " from " + selected_class.course.name
+        messages.success(request, successMessage)
+
         return redirect('showAllStudentsClasses')
 
 
-def chooseAClass(request, user_email):
-    user = User.objects.get(email=user_email)
+def chooseAClass(request, id):
+    user = User.objects.get(id=id)
     lecturer = Lecturer.objects.get(user=user)  # Assuming a one-to-one relationship between User and Lecturer
     lecturer_classes = Class.objects.filter(lecturer=lecturer)
 
@@ -616,29 +674,60 @@ def chooseAClass(request, user_email):
 
 
 def markStudentsGrade(request):
-    if request.metho == 'GET':
+    if request.method == 'GET':
         classID = request.GET.get('classChose')
-        classObj = Class.objects.get(id=classID)
-        getAllStudent = StudentEnrolment.objects.filter(Class=classID).values_list('student', flat=True)
-        allStudentsObjs = Student.objects.filter(id__in=getAllStudent)
-    return render(request, 'showAllStudentsWithMarks.html', {'class': classObj, 'Students': allStudentsObjs})
+        if classID:
+            classObj = Class.objects.get(id=classID)
+            getAllStudent = StudentEnrolment.objects.filter(Class=classID).values_list('student', flat=True)
+        # for student in getAllStudent:
+        #     studentGrade = StudentEnrolment.objects.get(student=student, Class=classID)
+        #     if studentGrade.grade is None:
+            allStudentsObjs = Student.objects.filter(id__in=getAllStudent)
+            return render(request, 'showAllStudentsWithMarks.html', {'class': classObj, 'students': allStudentsObjs})
+        else:
+            # 如果没有提供有效的 classChose 参数，可以返回一个错误页面或者重定向到选择班级的页面
+            return HttpResponse("Please select a class!")
 
 
+# def submitMarks(request):
+#     if request.method == 'POST':
+#         class_id = request.POST.get('class_id')
+#         selected_class = Class.objects.get(id=class_id)
+#         allStuents = StudentEnrolment.objects.filter(Class=selected_class).values_list('student', flat=True)
+#
+#         for studentGrade in allStuents:
+#             student_id = studentGrade
+#             grade = request.POST.get(f'mark_{student_id}')
+#             if grade:
+#                 try:
+#                     studentEnrolment = StudentEnrolment.objects.get(student=student_id, Class=class_id)
+#                     studentEnrolment.grade = int(grade)
+#                     studentEnrolment.grade_time = timezone.now()
+#                     studentEnrolment.save()
+#                 except ValueError:
+#                     pass  # 忽略非数值输入
+#     return render(request, "showAllStudentsWithGrades.html", {'class': selected_class, 'students': allStuents})
 def submitMarks(request):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
-        selected_class = get_object_or_404(Class, id=class_id)
-        for student in selected_class.students.all():
-            student_id = student.id
+        selected_class = Class.objects.get(id=class_id)
+        student_enrollments = StudentEnrolment.objects.filter(Class=selected_class).select_related('student')
+
+        for enrollment in student_enrollments:
+            student_id = enrollment.student.id
             grade = request.POST.get(f'mark_{student_id}')
             if grade:
-                enrollment, created = StudentEnrolment.objects.get_or_create(
-                    student=student,
-                    Class=selected_class,
-                    defaults={'grade': grade, 'gradeTime': timezone.now()}
-                )
-                if not created:
-                    enrollment.grade = grade
-                    enrollment.gradeTime = timezone.now()
+                try:
+                    enrollment.grade = int(grade)
+                    enrollment.grade_time = timezone.now()
                     enrollment.save()
-    return redirect('markStudentsGrade')
+                except ValueError:
+                    pass  # 忽略非数值输入
+
+    return render(request, "showAllStudentsWithGrades.html", {'class': selected_class, 'student_enrollments': student_enrollments})
+
+def displayStudentsGrades(request, id):
+    user = User.objects.get(id=id)
+    student = Student.objects.get(user=user)  # Assuming a one-to-one relationship between User and Student
+    student_enrollments = StudentEnrolment.objects.filter(student=student)
+    return render(request, 'showAllStudentsWithGrades.html', {'student': student, 'studentenrollments': student_enrollments})

@@ -1,11 +1,14 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
 from Ass1 import views
+from Ass1.views import redirect_view
 
 urlpatterns = [
     path('', views.index, name='home'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/profile/', redirect_view, name='redirect_view'),
     path('registerStudent/', views.registerStudent, name='registerStudent'),
     path('registerLecturer/', views.registerLecturer, name='registerLecturer'),
     path('updateLecturer/<int:id>/', views.updateLecturer, name='updateLecturer'),
@@ -51,7 +54,9 @@ urlpatterns = [
     path('showAllStudentstoRemoveClasses/', views.showAllStudentstoRemoveClasses, name='showAllStudentstoRemoveClasses'),
     path('removeClasses/', views.removeClasses, name='removeClasses'),
     path('updateTheStudentClasses/<int:id>/', views.updateTheStudentClasses, name='updateTheStudentClasses'),
-    path('chooseAClass/<int:user.id>/', views.chooseAClass, name='chooseAClass'),
+    path('chooseAClass/<int:id>/', views.chooseAClass, name='chooseAClass'),
     path('markStudentsGrade/', views.markStudentsGrade, name='markStudentsGrade'),
     path('submitMarks/', views.submitMarks, name='submitMarks'),
+    path('updateClassLecturer/<int:id>/', views.updateClassLecturer, name='updateClassLecturer'),
+    path('displayStudentsGrades/<int:id>/', views.displayStudentsGrades, name='displayStudentsGrades'),
 ]

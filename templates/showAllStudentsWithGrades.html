@@ -1,31 +1,28 @@
 {% extends "base.html" %}
 {% block title %}
-    Show All Semesters
+    Show All Students
 {% endblock %}
 {% block content %}
     {% if user.is_authenticated %}
         <button onclick="goBack()" class="goBackButton">Go Back</button>
-        {% for semester in semesters %}
-            <p>
-                <a href="{% url 'showSemester' semester.id %}">
-                    {{ semester.id }} - {{ semester.year }} - {{ semester.semester }}
-                </a>
-                <a href="{% url 'updateSemester' semester.id %}" class="btn btn-danger">
-                    Update
-                </a>
-                <a href="{% url "deleteSemester" semester.id %}" class="btn btn-danger">
-                    Delete
-                </a>
-            </p>
+        <h5>{{ class.number }}</h5>
+        <h5>{{ student.firstName }} {{ student.lastName }}</h5>
+        {% for enrollment in student_enrollments %}
+            <ul>
+                <li>{{ enrollment.student.firstName }} {{ enrollment.student.lastName }} - {{ enrollment.grade }}</li>
+            </ul>
         {% endfor %}
-        <a href="{% url 'createSemester' %}" class="btn btn-primary">Create New Semester</a>
+        {% for enrolment in studentenrollments %}
+            <ul>
+                <li>{{ enrolment.Class.number }} {{ enrolment.Class.course.name }} - {{ enrolment.grade }}</li>
+            </ul>
+        {% endfor %}
     {% endif %}
     <script>
         function goBack() {
             window.history.back();
         }
     </script>
-
     <style>
         .goBackButton {
             display: inline-block;

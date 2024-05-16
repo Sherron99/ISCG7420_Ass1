@@ -4,7 +4,10 @@
 {% endblock %}
 <body>
 {% block content %}
-    <p>Hello! {{ user.username }}</p>
-    <button><a href="{% url 'chooseAClass' user.id %}">Manage Your Classes</a></button>
+    {% if user.is_authenticated %}
+        <p>Hello! {{ user.username }}</p>
+        <button><a href="{% url 'chooseAClass' user.id %}">Manage Your Classes</a></button>
+    {% endif %}
 {% endblock %}
+
 </body>
